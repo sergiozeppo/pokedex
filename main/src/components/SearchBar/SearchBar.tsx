@@ -8,7 +8,7 @@ class SearchBar extends Component<SearchBarProps> {
 
   render() {
     return (
-      <SearchBar
+      <input
         className={this.props.className}
         value={this.props.value}
         type={this.props.type}
