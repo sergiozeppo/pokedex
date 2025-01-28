@@ -1,39 +1,15 @@
-import { useState } from 'react';
-import './App.css';
+import { Component, ReactNode } from 'react';
+import Header from './views/Header/Header';
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
+class App extends Component {
+  render(): ReactNode {
+    return (
       <div>
-        <a href="https://vite.dev">
-          <img src={''} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev">
-          <img
-            src={
-              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1001.png'
-            }
-            className="logo react"
-            alt="React logo"
-          />
-        </a>
+        <h1>Pokedex App Works!</h1>
+        <Header />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+    );
+  }
 }
 
 export default App;
