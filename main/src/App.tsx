@@ -1,11 +1,11 @@
 import { Component, ReactNode } from 'react';
 import Header from './views/Header/Header';
+import './App.css';
 
 class App extends Component {
   render(): ReactNode {
     return (
-      <div>
-        <h1>Pokedex App Works!</h1>
+      <div className="container">
         <Header />
       </div>
     );
