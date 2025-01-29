@@ -1,5 +1,7 @@
 import { Component, ChangeEvent } from 'react';
 import { SearchBarProps } from '../../types/types';
+import './SearchBar.css';
+import Button from '../Button/Button';
 
 class SearchBar extends Component<SearchBarProps> {
   handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
@@ -8,13 +10,22 @@ class SearchBar extends Component<SearchBarProps> {
 
   render() {
     return (
-      <input
-        className={this.props.className}
-        value={this.props.value}
-        type={this.props.type}
-        placeholder={this.props.placeholder}
-        onChange={this.handleChangeEvent}
-      />
+      <div className="search-bar">
+        <input
+          className={this.props.className}
+          value={this.props.value}
+          type={this.props.type}
+          placeholder={this.props.placeholder}
+          onChange={this.handleChangeEvent}
+        />
+        <Button
+          className="app"
+          title="Search"
+          onClick={() => console.log('Click')}
+        >
+          Search
+        </Button>
+      </div>
     );
   }
 }
