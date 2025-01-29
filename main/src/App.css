@@ -4,7 +4,10 @@
 
   --primary-bg: #dc0a2d;
   --secondary-bg: #fff;
+  --grayscale-bg: #efefef;
   --border: #ccc;
+  --text: #666;
+  --text-dark: #1d1d1d;
 }
 
 body {
