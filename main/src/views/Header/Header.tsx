@@ -1,23 +1,22 @@
 import { Component, ReactNode } from 'react';
-import Button from '../../components/Button/Button';
-// import { ButtonProps, SearchBarProps } from '../../types/types';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import Logo from '../../components/Logo/Logo';
+import './Header.css';
 
 class Header extends Component {
   render(): ReactNode {
     return (
       <header>
+        <div className="title">
+          <Logo />
+          <span>Pokédex</span>
+        </div>
         <SearchBar
-          className="app"
+          className="search-input"
           value={''}
           type={'text'}
-          placeholder={'Zdrasti'}
+          placeholder={'Search'}
           onChange={(e) => console.log(e.target.value)}
-        />
-        <Button
-          className="app"
-          title="Search"
-          onClick={() => console.log('Click')}
         />
       </header>
     );
