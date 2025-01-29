@@ -19,7 +19,7 @@ class SearchBar extends Component<SearchBarProps> {
           onChange={this.handleChangeEvent}
         />
         <Button
-          className="app"
+          className=""
           title="Search"
           onClick={() => console.log('Click')}
         >
