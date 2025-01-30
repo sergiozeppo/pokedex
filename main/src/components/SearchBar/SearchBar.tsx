@@ -1,4 +1,4 @@
-import { Component, ChangeEvent } from 'react';
+import { Component, ChangeEvent, KeyboardEvent } from 'react';
 import { SearchBarProps } from '../../types/types';
 import './SearchBar.css';
 import Button from '../Button/Button';
@@ -6,6 +6,12 @@ import Button from '../Button/Button';
 class SearchBar extends Component<SearchBarProps> {
   handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.props.onInputChange(event.target.value);
+  };
+
+  handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      this.props.onSearch(this.props.searchQuery);
+    }
   };
 
   handleSearchClick = () => {
@@ -21,6 +27,7 @@ class SearchBar extends Component<SearchBarProps> {
           type="text"
           placeholder="Search"
           onChange={this.handleInputChange}
+          onKeyDown={this.handleKeyDown}
         />
         <Button
           className="button"

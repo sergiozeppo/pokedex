@@ -52,23 +52,28 @@ class App extends Component<AppState> {
   handleSearchData = async (searchData: string) => {
     this.setState({ isFetching: true, searchQuery: searchData.trim() });
 
-    fetchSearchData(searchData.trim())
-      .then((pokemons) => {
-        this.setState({
-          pokemons: pokemons || [],
-          error: null,
+    if (!searchData) {
+      localStorage.removeItem('searchPokemon');
+      this.handleFetchData();
+    } else {
+      fetchSearchData(searchData.trim())
+        .then((pokemons) => {
+          this.setState({
+            pokemons: pokemons || [],
+            error: null,
+          });
+          localStorage.setItem('searchPokemon', searchData.trim());
+        })
+        .catch((error) => {
+          this.setState({
+            pokemons: [],
+            error: error instanceof Error ? error : new Error('Unknown error'),
+          });
+        })
+        .finally(() => {
+          this.setState({ isFetching: false });
         });
-        localStorage.setItem('searchPokemon', searchData.trim());
-      })
-      .catch((error) => {
-        this.setState({
-          pokemons: [],
-          error: error instanceof Error ? error : new Error('Unknown error'),
-        });
-      })
-      .finally(() => {
-        this.setState({ isFetching: false });
-      });
+    }
   };
 
   handleInputChange = (searchQuery: string) => {
