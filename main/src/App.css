@@ -22,3 +22,22 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+  50% {
+    transform: rotate(180deg) translateY(-5px); /* Подъем вверх */
+  }
+  100% {
+    transform: rotate(360deg) translateY(0);
+  }
+}
+
+.pokeball-loader {
+  width: 50px;
+  height: 50px;
+  background: url('../public/assets/img/favicon.png') no-repeat center/contain;
+  animation: spin 1.5s linear infinite;
+}
