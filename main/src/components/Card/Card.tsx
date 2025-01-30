@@ -2,6 +2,7 @@ import { Component, ReactNode } from 'react';
 import { fetchPokemonDetails } from '../../services/api';
 import './Card.css';
 import { PokemonData } from '../../types/types';
+import CardLoader from '../CardLoader/CardLoader';
 
 export type CardProps = {
   name: string;
@@ -26,6 +27,7 @@ class Card extends Component<CardProps, CardState> {
 
   async componentDidMount() {
     try {
+      this.setState({ isLoading: true });
       const pokemonData: PokemonData = await fetchPokemonDetails(
         this.props.name
       );
@@ -36,13 +38,13 @@ class Card extends Component<CardProps, CardState> {
           pokemonData.sprites.other['official-artwork'].front_default ||
           pokemonData.sprites.front_default,
         abilities: pokemonData.abilities.map((ability) => ability.ability.name),
-        isLoading: false,
       });
     } catch {
       this.setState({
         error: 'Failed to load Pokémon details',
-        isLoading: false,
       });
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -54,7 +56,7 @@ class Card extends Component<CardProps, CardState> {
     return (
       <div className="card">
         {isLoading ? (
-          <p>Loading...</p>
+          <CardLoader />
         ) : error ? (
           <p>{error}</p>
         ) : (
