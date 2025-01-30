@@ -1,5 +1,3 @@
-import { ChangeEvent } from 'react';
-
 export type ButtonProps = {
   className: string;
   title: string;
@@ -9,10 +7,11 @@ export type ButtonProps = {
 
 export type SearchBarProps = {
   className: string;
-  value: string;
   type: string;
   placeholder: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSearch: (searchQuery: string) => void;
+  searchQuery: string;
+  onInputChange: (searchQuery: string) => void;
 };
 
 export type Pokemon = {
@@ -36,7 +35,7 @@ export interface PokemonData {
   };
 }
 
-interface Ability {
+export interface Ability {
   ability: {
     name: string;
     url: string;

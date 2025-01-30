@@ -3,8 +3,15 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import Logo from '../../components/Logo/Logo';
 import './Header.css';
 
-class Header extends Component {
+interface HeaderProps {
+  onSearch: (searchData: string) => void;
+  searchQuery: string;
+  onInputChange: (searchQuery: string) => void;
+}
+
+class Header extends Component<HeaderProps> {
   render(): ReactNode {
+    const { onSearch, searchQuery, onInputChange } = this.props;
     return (
       <header>
         <div className="title">
@@ -13,10 +20,11 @@ class Header extends Component {
         </div>
         <SearchBar
           className="search-input"
-          value={''}
-          type={'text'}
-          placeholder={'Search'}
-          onChange={(e) => console.log(e.target.value)}
+          type="text"
+          placeholder="Search"
+          onSearch={onSearch}
+          searchQuery={searchQuery}
+          onInputChange={onInputChange}
         />
       </header>
     );

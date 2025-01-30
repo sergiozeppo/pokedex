@@ -5,6 +5,7 @@ import Card from '../Card/Card';
 
 interface CardListProps {
   pokemons: Pokemon[];
+  isFetching: boolean;
 }
 
 class CardList extends Component<CardListProps> {
@@ -13,7 +14,7 @@ class CardList extends Component<CardListProps> {
 
     return (
       <div className="card-list">
-        {pokemons.length ? (
+        {Array.isArray(pokemons) && pokemons.length > 0 ? (
           pokemons.map((pokemon, index) => (
             <Card key={index} name={pokemon.name} />
           ))

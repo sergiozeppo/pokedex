@@ -4,24 +4,28 @@ import './SearchBar.css';
 import Button from '../Button/Button';
 
 class SearchBar extends Component<SearchBarProps> {
-  handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
-    this.props.onChange(event);
+  handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    this.props.onInputChange(event.target.value);
+  };
+
+  handleSearchClick = () => {
+    this.props.onSearch(this.props.searchQuery);
   };
 
   render() {
     return (
       <div className="search-bar">
         <input
-          className={this.props.className}
-          value={this.props.value}
-          type={this.props.type}
-          placeholder={this.props.placeholder}
-          onChange={this.handleChangeEvent}
+          className="search-input"
+          value={this.props.searchQuery}
+          type="text"
+          placeholder="Search"
+          onChange={this.handleInputChange}
         />
         <Button
-          className=""
+          className="button"
           title="Search"
-          onClick={() => console.log('Click')}
+          onClick={this.handleSearchClick}
         >
           Search
         </Button>
