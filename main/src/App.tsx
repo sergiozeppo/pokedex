@@ -88,7 +88,14 @@ class App extends Component<AppState> {
         {isFetching ? (
           <div className="pokeball-loader"></div>
         ) : error ? (
-          <p>Error: {error.message}</p>
+          <div className="broken">
+            <img
+              className="broken-pokeball"
+              src="/assets/img/broken-pokeball.png"
+              alt=""
+            />
+            <span>Error: {error.message}</span>
+          </div>
         ) : (
           <Main pokemons={pokemons} isFetching={this.state.isFetching} />
         )}
