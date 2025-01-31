@@ -3,7 +3,15 @@ import { SearchBarProps } from '../../types/types';
 import './SearchBar.css';
 import Button from '../Button/Button';
 
-class SearchBar extends Component<SearchBarProps> {
+interface ErrorState {
+  hasError: boolean;
+}
+
+class SearchBar extends Component<SearchBarProps, ErrorState> {
+  state: ErrorState = {
+    hasError: false,
+  };
+
   handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.props.onInputChange(event.target.value);
   };
@@ -18,7 +26,17 @@ class SearchBar extends Component<SearchBarProps> {
     this.props.onSearch(this.props.searchQuery);
   };
 
+  handleClick = () => {
+    this.setState({ hasError: true });
+  };
+
   render() {
+    const { hasError } = this.state;
+
+    if (hasError) {
+      throw new Error('Custom error for test ErrorBoundary');
+    }
+
     return (
       <div className="search-bar">
         <input
@@ -36,6 +54,9 @@ class SearchBar extends Component<SearchBarProps> {
         >
           Search
         </Button>
+        <button className="error-button" onClick={this.handleClick}>
+          Click me
+        </button>
       </div>
     );
   }

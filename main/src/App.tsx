@@ -86,27 +86,27 @@ class App extends Component<AppState> {
 
     return (
       <div className="container">
-        <Header
-          onSearch={this.handleSearchData}
-          searchQuery={searchQuery}
-          onInputChange={this.handleInputChange}
-        />
-        {isFetching ? (
-          <div className="pokeball-loader"></div>
-        ) : error ? (
-          <div className="broken">
-            <img
-              className="broken-pokeball"
-              src="/assets/img/broken-pokeball.png"
-              alt=""
-            />
-            <span>Error: {error.message}</span>
-          </div>
-        ) : (
-          <ErrorBoundary>
+        <ErrorBoundary>
+          <Header
+            onSearch={this.handleSearchData}
+            searchQuery={searchQuery}
+            onInputChange={this.handleInputChange}
+          />
+          {isFetching ? (
+            <div className="pokeball-loader"></div>
+          ) : error ? (
+            <div className="broken">
+              <img
+                className="broken-pokeball"
+                src="/assets/img/broken-pokeball.png"
+                alt=""
+              />
+              <span>Error: {error.message}</span>
+            </div>
+          ) : (
             <Main pokemons={pokemons} isFetching={this.state.isFetching} />
-          </ErrorBoundary>
-        )}
+          )}
+        </ErrorBoundary>
       </div>
     );
   }
