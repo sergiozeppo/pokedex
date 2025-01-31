@@ -4,6 +4,7 @@ import { fetchData, fetchSearchData } from './services/api';
 import './App.css';
 import Main from './views/Main/Main';
 import { Pokemon } from './types/types';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 interface AppState {
   pokemons: Pokemon[];
@@ -82,7 +83,7 @@ class App extends Component<AppState> {
 
   render(): ReactNode {
     const { pokemons, isFetching, error, searchQuery } = this.state;
-    console.log('App render:', { pokemons, isFetching, error });
+
     return (
       <div className="container">
         <Header
@@ -102,7 +103,9 @@ class App extends Component<AppState> {
             <span>Error: {error.message}</span>
           </div>
         ) : (
-          <Main pokemons={pokemons} isFetching={this.state.isFetching} />
+          <ErrorBoundary>
+            <Main pokemons={pokemons} isFetching={this.state.isFetching} />
+          </ErrorBoundary>
         )}
       </div>
     );

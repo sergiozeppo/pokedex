@@ -3,3 +3,12 @@ main {
   padding: 12px;
   width: 100%;
 }
+.error-button {
+  background-color: #ff854d;
+  border: 1px solid var(--secondary-bg);
+  color: var(--secondary-bg);
+}
+
+.error-button:hover {
+  background-color: #e60000;
+}
