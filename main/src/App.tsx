@@ -8,6 +8,7 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 interface AppState {
   pokemons: Pokemon[];
+  allPokemons: Pokemon[];
   error: Error | null;
   isFetching: boolean;
   searchQuery: string;
@@ -17,6 +18,7 @@ class App extends Component<Record<string, never>, AppState> {
   state: AppState = {
     searchQuery: '',
     pokemons: [],
+    allPokemons: [],
     isFetching: false,
     error: null,
   };
@@ -24,56 +26,54 @@ class App extends Component<Record<string, never>, AppState> {
   componentDidMount() {
     const prevSearch = localStorage.getItem('searchPokemon');
     if (prevSearch) {
-      this.handleSearchData(prevSearch);
+      this.setState({ searchQuery: prevSearch }, () => {
+        this.handleSearchData(prevSearch);
+      });
     } else {
       this.handleFetchData();
     }
   }
 
   handleFetchData = async () => {
+    this.setState({ isFetching: true, error: null });
+
     try {
-      this.setState({ isFetching: true });
-      const pokemons = await fetchData();
-      this.setState({
-        pokemons: pokemons || [],
-        error: null,
-      });
+      const allPokemons = await fetchData();
+      this.setState({ allPokemons, pokemons: allPokemons });
     } catch (error) {
       this.setState({
-        pokemons: [],
         error: error instanceof Error ? error : new Error('Unknown error'),
       });
     } finally {
-      this.setState({
-        isFetching: false,
-      });
+      this.setState({ isFetching: false });
     }
   };
 
   handleSearchData = async (searchData: string) => {
-    this.setState({ isFetching: true, searchQuery: searchData.trim() });
+    this.setState({
+      isFetching: true,
+      searchQuery: searchData.trim(),
+      error: null,
+    });
 
     if (!searchData) {
       localStorage.removeItem('searchPokemon');
       this.handleFetchData();
-    } else {
-      fetchSearchData(searchData.trim())
-        .then((pokemons) => {
-          this.setState({
-            pokemons: pokemons || [],
-            error: null,
-          });
-          localStorage.setItem('searchPokemon', searchData.trim());
-        })
-        .catch((error) => {
-          this.setState({
-            pokemons: [],
-            error: error instanceof Error ? error : new Error('Unknown error'),
-          });
-        })
-        .finally(() => {
-          this.setState({ isFetching: false });
-        });
+      return;
+    }
+
+    try {
+      const { allPokemons = await fetchData() } = this.state;
+      const pokemons = await fetchSearchData(searchData.trim(), allPokemons);
+      this.setState({ pokemons });
+      localStorage.setItem('searchPokemon', searchData.trim());
+    } catch (error) {
+      this.setState({
+        error: error instanceof Error ? error : new Error('Unknown error'),
+        pokemons: [],
+      });
+    } finally {
+      this.setState({ isFetching: false });
     }
   };
 
@@ -104,7 +104,7 @@ class App extends Component<Record<string, never>, AppState> {
               <span>Error: {error.message}</span>
             </div>
           ) : (
-            <Main pokemons={pokemons} isFetching={this.state.isFetching} />
+            <Main pokemons={pokemons} isFetching={isFetching} />
           )}
         </ErrorBoundary>
       </div>
