@@ -55,7 +55,7 @@ class SearchBar extends Component<SearchBarProps, ErrorState> {
           Search
         </Button>
         <button className="error-button" onClick={this.handleClick}>
-          Click me
+          ERROR!
         </button>
       </div>
     );
