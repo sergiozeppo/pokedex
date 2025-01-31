@@ -24,14 +24,14 @@ class App extends Component<Record<string, never>, AppState> {
   };
 
   componentDidMount() {
-    const prevSearch = localStorage.getItem('searchPokemon');
-    if (prevSearch) {
-      this.setState({ searchQuery: prevSearch }, () => {
-        this.handleSearchData(prevSearch);
-      });
-    } else {
-      this.handleFetchData();
-    }
+    this.handleFetchData().then(() => {
+      const prevSearch = localStorage.getItem('searchPokemon');
+      if (prevSearch) {
+        this.setState({ searchQuery: prevSearch }, () => {
+          this.handleSearchData(prevSearch);
+        });
+      }
+    });
   }
 
   handleFetchData = async () => {
@@ -63,7 +63,7 @@ class App extends Component<Record<string, never>, AppState> {
     }
 
     try {
-      const { allPokemons = await fetchData() } = this.state;
+      const { allPokemons } = this.state;
       const pokemons = await fetchSearchData(searchData.trim(), allPokemons);
       this.setState({ pokemons });
       localStorage.setItem('searchPokemon', searchData.trim());
