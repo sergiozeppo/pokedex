@@ -13,7 +13,7 @@ interface AppState {
   searchQuery: string;
 }
 
-class App extends Component<AppState> {
+class App extends Component<Record<string, never>, AppState> {
   state: AppState = {
     searchQuery: '',
     pokemons: [],
