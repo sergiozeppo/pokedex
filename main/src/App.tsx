@@ -45,7 +45,7 @@ class App extends Component<Record<string, never>, AppState> {
         error: error instanceof Error ? error : new Error('Unknown error'),
       });
     } finally {
-      this.setState({ isFetching: true });
+      this.setState({ isFetching: false });
     }
   };
 

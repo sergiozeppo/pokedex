@@ -46,7 +46,7 @@ body {
 .pokeball-loader {
   width: 100px;
   height: 100px;
-  background: url('/assets/img/favicon.png') no-repeat center/contain;
+  background: url('/assets/img/loader.png') no-repeat center/contain;
   animation: spin 1.5s linear infinite;
 }
 
