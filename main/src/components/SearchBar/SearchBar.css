@@ -27,6 +27,7 @@ input {
   background-color: var(--secondary-bg);
   background-size: 20px;
   color: #333;
+  outline: none;
 }
 
 .search-input::placeholder {

@@ -35,6 +35,14 @@ body {
   }
 }
 
+.pokeball-loader-container {
+  width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .pokeball-loader {
   width: 100px;
   height: 100px;

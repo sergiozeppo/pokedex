@@ -45,7 +45,7 @@ class App extends Component<Record<string, never>, AppState> {
         error: error instanceof Error ? error : new Error('Unknown error'),
       });
     } finally {
-      this.setState({ isFetching: false });
+      this.setState({ isFetching: true });
     }
   };
 
@@ -93,7 +93,9 @@ class App extends Component<Record<string, never>, AppState> {
             onInputChange={this.handleInputChange}
           />
           {isFetching ? (
-            <div className="pokeball-loader"></div>
+            <div className="pokeball-loader-container">
+              <div className="pokeball-loader"></div>
+            </div>
           ) : error ? (
             <div className="broken">
               <img
