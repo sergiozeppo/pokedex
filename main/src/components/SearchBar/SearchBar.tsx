@@ -1,64 +1,51 @@
-import { Component, ChangeEvent, KeyboardEvent } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { SearchBarProps } from '../../types/types';
 import './SearchBar.css';
 import Button from '../Button/Button';
 
-interface ErrorState {
-  hasError: boolean;
-}
+function SearchBar({ onSearch, searchQuery, onInputChange }: SearchBarProps) {
+  const [hasError, setHasError] = useState(false);
 
-class SearchBar extends Component<SearchBarProps, ErrorState> {
-  state: ErrorState = {
-    hasError: false,
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onInputChange(event.target.value);
   };
 
-  handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.props.onInputChange(event.target.value);
-  };
-
-  handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      this.props.onSearch(this.props.searchQuery);
+      onSearch(searchQuery);
     }
   };
 
-  handleSearchClick = () => {
-    this.props.onSearch(this.props.searchQuery);
+  const handleSearchClick = () => {
+    onSearch(searchQuery);
   };
 
-  handleClick = () => {
-    this.setState({ hasError: true });
+  const handleClick = () => {
+    setHasError(true);
   };
 
-  render() {
-    const { hasError } = this.state;
-
-    if (hasError) {
-      throw new Error('Custom error for test ErrorBoundary');
-    }
-
-    return (
-      <div className="search-bar">
-        <input
-          className="search-input"
-          value={this.props.searchQuery}
-          type="text"
-          placeholder="Search"
-          onChange={this.handleInputChange}
-          onKeyDown={this.handleKeyDown}
-        />
-        <Button
-          className="button"
-          title="Search"
-          onClick={this.handleSearchClick}
-        >
-          Search
-        </Button>
-        <button className="error-button" onClick={this.handleClick}>
-          ERROR!
-        </button>
-      </div>
-    );
+  if (hasError) {
+    throw new Error('Custom error for test ErrorBoundary');
   }
+
+  return (
+    <div className="search-bar">
+      <input
+        className="search-input"
+        value={searchQuery}
+        type="text"
+        placeholder="Search"
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+      />
+      <Button className="button" title="Search" onClick={handleSearchClick}>
+        Search
+      </Button>
+      <button className="error-button" onClick={handleClick}>
+        ERROR!
+      </button>
+    </div>
+  );
 }
+
 export default SearchBar;
