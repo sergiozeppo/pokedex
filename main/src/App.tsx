@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Header from './views/Header/Header';
 import { fetchData, fetchSearchData } from './services/api';
 import './App.css';
@@ -6,112 +6,104 @@ import Main from './views/Main/Main';
 import { Pokemon } from './types/types';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
-interface AppState {
-  pokemons: Pokemon[];
-  allPokemons: Pokemon[];
-  error: Error | null;
-  isFetching: boolean;
-  searchQuery: string;
-}
+const App = () => {
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
+  const [error, setError] = useState<Error | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const allPokemonsRef = useRef<Pokemon[]>([]);
+  allPokemonsRef.current = allPokemons;
 
-class App extends Component<Record<string, never>, AppState> {
-  state: AppState = {
-    searchQuery: '',
-    pokemons: [],
-    allPokemons: [],
-    isFetching: false,
-    error: null,
-  };
+  const handleFetchData = useCallback(async () => {
+    setIsFetching(true);
+    setError(null);
 
-  componentDidMount() {
-    this.handleFetchData().then(() => {
-      const prevSearch = localStorage.getItem('searchPokemon');
-      if (prevSearch) {
-        this.setState({ searchQuery: prevSearch }, () => {
-          this.handleSearchData(prevSearch);
-        });
+    try {
+      const data = await fetchData();
+      setAllPokemons(data);
+      setPokemons(data);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Unknown error'));
+    } finally {
+      setIsFetching(false);
+    }
+  }, []);
+
+  const handleSearchData = useCallback(
+    async (searchData: string) => {
+      const trimmedQuery = searchData.trim();
+      setIsFetching(true);
+      setError(null);
+      setSearchQuery(trimmedQuery);
+
+      if (!trimmedQuery) {
+        localStorage.removeItem('searchPokemon');
+        handleFetchData();
+        return;
       }
-    });
-  }
 
-  handleFetchData = async () => {
-    this.setState({ isFetching: true, error: null });
+      try {
+        const filteredPokemons = await fetchSearchData(
+          trimmedQuery,
+          allPokemonsRef.current
+        );
+        setPokemons(filteredPokemons);
+        localStorage.setItem('searchPokemon', trimmedQuery);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+        setPokemons([]);
+      } finally {
+        setIsFetching(false);
+      }
+    },
+    [handleFetchData]
+  );
 
-    try {
-      const allPokemons = await fetchData();
-      this.setState({ allPokemons, pokemons: allPokemons });
-    } catch (error) {
-      this.setState({
-        error: error instanceof Error ? error : new Error('Unknown error'),
-      });
-    } finally {
-      this.setState({ isFetching: false });
-    }
-  };
+  useEffect(() => {
+    const savedSearch = localStorage.getItem('searchPokemon');
 
-  handleSearchData = async (searchData: string) => {
-    this.setState({
-      isFetching: true,
-      searchQuery: searchData.trim(),
-      error: null,
-    });
+    const initApp = async () => {
+      await handleFetchData();
+      if (savedSearch) {
+        handleSearchData(savedSearch);
+      }
+    };
 
-    if (!searchData) {
-      localStorage.removeItem('searchPokemon');
-      this.handleFetchData();
-      return;
-    }
+    initApp();
+  }, [handleFetchData, handleSearchData]);
 
-    try {
-      const { allPokemons } = this.state;
-      const pokemons = await fetchSearchData(searchData.trim(), allPokemons);
-      this.setState({ pokemons });
-      localStorage.setItem('searchPokemon', searchData.trim());
-    } catch (error) {
-      this.setState({
-        error: error instanceof Error ? error : new Error('Unknown error'),
-        pokemons: [],
-      });
-    } finally {
-      this.setState({ isFetching: false });
-    }
-  };
+  const handleInputChange = useCallback(async (query: string) => {
+    setSearchQuery(query);
+  }, []);
 
-  handleInputChange = (searchQuery: string) => {
-    this.setState({ searchQuery });
-  };
-
-  render(): ReactNode {
-    const { pokemons, isFetching, error, searchQuery } = this.state;
-
-    return (
-      <div className="container">
-        <ErrorBoundary>
-          <Header
-            onSearch={this.handleSearchData}
-            searchQuery={searchQuery}
-            onInputChange={this.handleInputChange}
-          />
-          {isFetching ? (
-            <div className="pokeball-loader-container">
-              <div className="pokeball-loader"></div>
-            </div>
-          ) : error ? (
-            <div className="broken">
-              <img
-                className="broken-pokeball"
-                src="/assets/img/broken-pokeball.png"
-                alt=""
-              />
-              <span>Error: {error.message}</span>
-            </div>
-          ) : (
-            <Main pokemons={pokemons} />
-          )}
-        </ErrorBoundary>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="container">
+      <ErrorBoundary>
+        <Header
+          onSearch={handleSearchData}
+          searchQuery={searchQuery}
+          onInputChange={handleInputChange}
+        />
+        {isFetching ? (
+          <div className="pokeball-loader-container">
+            <div className="pokeball-loader"></div>
+          </div>
+        ) : error ? (
+          <div className="broken">
+            <img
+              className="broken-pokeball"
+              src="/assets/img/broken-pokeball.png"
+              alt=""
+            />
+            <span>Error: {error.message}</span>
+          </div>
+        ) : (
+          <Main pokemons={pokemons} isFetching={isFetching} />
+        )}
+      </ErrorBoundary>
+    </div>
+  );
+};
 
 export default App;
