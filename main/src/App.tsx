@@ -99,7 +99,7 @@ const App = () => {
             <span>Error: {error.message}</span>
           </div>
         ) : (
-          <Main pokemons={pokemons} isFetching={isFetching} />
+          <Main pokemons={pokemons} />
         )}
       </ErrorBoundary>
     </div>
