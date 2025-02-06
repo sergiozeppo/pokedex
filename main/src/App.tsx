@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import Header from './views/Header/Header';
 import { fetchData, fetchSearchData } from './services/api';
 import './App.css';
 import Main from './views/Main/Main';
 import { Pokemon } from './types/types';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import useLSSavedSearch from './utils/useLSSavedSearch/useLSSavedSearch';
 
 const App = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -60,22 +61,11 @@ const App = () => {
     [handleFetchData]
   );
 
-  useEffect(() => {
-    const savedSearch = localStorage.getItem('searchPokemon');
-
-    const initApp = async () => {
-      await handleFetchData();
-      if (savedSearch) {
-        handleSearchData(savedSearch);
-      }
-    };
-
-    initApp();
-  }, [handleFetchData, handleSearchData]);
-
   const handleInputChange = useCallback(async (query: string) => {
     setSearchQuery(query);
   }, []);
+
+  useLSSavedSearch(handleFetchData, handleSearchData);
 
   return (
     <div className="container">
