@@ -106,7 +106,7 @@ const App = () => {
                 Prev
               </button>
               <span>
-                Page {page}/{totalPages}
+                {page} / {totalPages}
               </span>
               <button
                 className="pagination-button"
