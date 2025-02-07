@@ -25,7 +25,8 @@ const Card = ({ name }: CardProps) => {
         setImageUrl(
           pokemonData.sprites.other.dream_world.front_default ||
             pokemonData.sprites.other['official-artwork'].front_default ||
-            pokemonData.sprites.front_default
+            pokemonData.sprites.front_default ||
+            './assets/img/poke-loader.png'
         );
         setAbilities(
           pokemonData.abilities.map((ability) => ability.ability.name)
