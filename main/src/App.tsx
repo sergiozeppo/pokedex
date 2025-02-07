@@ -6,20 +6,20 @@ import Main from './views/Main/Main';
 import { Pokemon } from './types/types';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import useLSSavedSearch from './utils/useLSSavedSearch/useLSSavedSearch';
+import { usePagination } from './utils/usePagination/usePagination';
 
 const App = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const allPokemonsRef = useRef<Pokemon[]>([]);
   allPokemonsRef.current = allPokemons;
 
   const handleFetchData = useCallback(async () => {
     setIsFetching(true);
     setError(null);
-
     try {
       const data = await fetchData();
       setAllPokemons(data);
@@ -61,11 +61,17 @@ const App = () => {
     [handleFetchData]
   );
 
-  const handleInputChange = useCallback(async (query: string) => {
+  const handleInputChange = useCallback((query: string) => {
     setSearchQuery(query);
   }, []);
 
   useLSSavedSearch(handleFetchData, handleSearchData);
+
+  const { currentData, page, totalPages, nextPage, prevPage } = usePagination(
+    pokemons,
+    1,
+    20
+  );
 
   return (
     <div className="container">
@@ -89,7 +95,28 @@ const App = () => {
             <span>Error: {error.message}</span>
           </div>
         ) : (
-          <Main pokemons={pokemons} />
+          <>
+            <Main pokemons={currentData} />
+            <div className="pagination">
+              <button
+                className="pagination-button"
+                onClick={prevPage}
+                disabled={page === 1}
+              >
+                Prev
+              </button>
+              <span>
+                Page {page}/{totalPages}
+              </span>
+              <button
+                className="pagination-button"
+                onClick={nextPage}
+                disabled={page === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </>
         )}
       </ErrorBoundary>
     </div>

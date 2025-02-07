@@ -4,7 +4,7 @@ const URL = 'https://pokeapi.co/api/v2/pokemon/';
 
 export const fetchData = async (): Promise<Pokemon[]> => {
   try {
-    const response = await fetch(`${URL}?offset=0&limit=20`);
+    const response = await fetch(`${URL}?offset=0&limit=1300`);
     if (!response.ok) {
       throw new Error('Error fetching pokemons');
     }
