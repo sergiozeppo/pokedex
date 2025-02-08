@@ -1,10 +1,9 @@
+import { URL, POKEMONS_LIMIT } from '../constants/constants';
 import { Ability, Pokemon } from '../types/types';
-
-const URL = 'https://pokeapi.co/api/v2/pokemon/';
 
 export const fetchData = async (): Promise<Pokemon[]> => {
   try {
-    const response = await fetch(`${URL}?offset=0&limit=1300`);
+    const response = await fetch(`${URL}?offset=0&limit=${POKEMONS_LIMIT}`);
     if (!response.ok) {
       throw new Error('Error fetching pokemons');
     }
@@ -47,7 +46,8 @@ export const fetchSearchData = async (
           imageUrl:
             details.sprites.other.dream_world.front_default ||
             details.sprites.other['official-artwork'].front_default ||
-            details.sprites.front_default,
+            details.sprites.front_default ||
+            './assets/img/poke-loader.png',
           abilities: details.abilities.map(
             (ability: Ability) => ability.ability.name
           ),
