@@ -49,7 +49,6 @@ const App = () => {
       if (!trimmedQuery) {
         localStorage.removeItem('searchPokemon');
         await handleFetchData();
-        setShowPagination(false);
         return;
       }
 
@@ -79,20 +78,18 @@ const App = () => {
   useLSSavedSearch(handleFetchData, handleSearchData);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const urlPage = parseInt(searchParams.get('page') || '1');
-
-  const { currentData, page, totalPages, setPage, nextPage, prevPage } =
-    usePagination(pokemons, urlPage, POKEMONS_ON_PAGE);
+  const initialPage = parseInt(
+    searchParams.get('page') || INITIAL_PAGE.toString()
+  );
+  const { currentData, page, totalPages, nextPage, prevPage } = usePagination(
+    pokemons,
+    initialPage,
+    POKEMONS_ON_PAGE
+  );
 
   useEffect(() => {
     setSearchParams({ page: page.toString() });
   }, [page, setSearchParams]);
-
-  useEffect(() => {
-    if (pokemons.length > 0 && totalPages > 0 && urlPage !== page) {
-      setPage(urlPage);
-    }
-  }, [urlPage, pokemons, page, setPage, totalPages]);
 
   const location = useLocation();
   const isNotFound = location.pathname !== '/';
