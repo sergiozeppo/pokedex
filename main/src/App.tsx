@@ -7,11 +7,14 @@ import { Pokemon } from './types/types';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import useLSSavedSearch from './utils/useLSSavedSearch/useLSSavedSearch';
 import { usePagination } from './utils/usePagination/usePagination';
+import { Route, Routes, useLocation } from 'react-router';
+import NotFound from './views/NotFound/NotFound';
 
 const App = () => {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [isFetching, setIsFetching] = useState(false);
+  const [showPagination, setShowPagination] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const allPokemonsRef = useRef<Pokemon[]>([]);
@@ -20,12 +23,15 @@ const App = () => {
   const handleFetchData = useCallback(async () => {
     setIsFetching(true);
     setError(null);
+    setShowPagination(false);
     try {
       const data = await fetchData();
       setAllPokemons(data);
       setPokemons(data);
+      setShowPagination(true);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Unknown error'));
+      setShowPagination(false);
     } finally {
       setIsFetching(false);
     }
@@ -36,11 +42,13 @@ const App = () => {
       const trimmedQuery = searchData.trim();
       setIsFetching(true);
       setError(null);
+      setShowPagination(false);
       setSearchQuery(trimmedQuery);
 
       if (!trimmedQuery) {
         localStorage.removeItem('searchPokemon');
         handleFetchData();
+        setShowPagination(false);
         return;
       }
 
@@ -50,10 +58,12 @@ const App = () => {
           allPokemonsRef.current
         );
         setPokemons(filteredPokemons);
+        setShowPagination(true);
         localStorage.setItem('searchPokemon', trimmedQuery);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Unknown error'));
         setPokemons([]);
+        setShowPagination(false);
       } finally {
         setIsFetching(false);
       }
@@ -72,6 +82,9 @@ const App = () => {
     1,
     20
   );
+
+  const location = useLocation();
+  const isNotFound = location.pathname !== '/';
 
   return (
     <div className="container">
@@ -96,26 +109,32 @@ const App = () => {
           </div>
         ) : (
           <>
-            <Main pokemons={currentData} />
-            <div className="pagination">
-              <button
-                className="pagination-button"
-                onClick={prevPage}
-                disabled={page === 1}
-              >
-                Prev
-              </button>
-              <span>
-                {page} / {totalPages}
-              </span>
-              <button
-                className="pagination-button"
-                onClick={nextPage}
-                disabled={page === totalPages}
-              >
-                Next
-              </button>
-            </div>
+            <Routes>
+              <Route path="/" element={<Main pokemons={currentData} />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+
+            {showPagination && !isNotFound && currentData.length > 0 && (
+              <div className="pagination">
+                <button
+                  className="pagination-button"
+                  onClick={prevPage}
+                  disabled={page === 1}
+                >
+                  Prev
+                </button>
+                <span>
+                  {page} / {totalPages}
+                </span>
+                <button
+                  className="pagination-button"
+                  onClick={nextPage}
+                  disabled={page === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </>
         )}
       </ErrorBoundary>
