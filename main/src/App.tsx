@@ -1,4 +1,5 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { Route, Routes, useLocation, useSearchParams } from 'react-router';
 import Header from './views/Header/Header';
 import { fetchData, fetchSearchData } from './services/api';
 import './App.css';
@@ -7,8 +8,8 @@ import { Pokemon } from './types/types';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import useLSSavedSearch from './utils/useLSSavedSearch/useLSSavedSearch';
 import { usePagination } from './utils/usePagination/usePagination';
-import { Route, Routes, useLocation } from 'react-router';
 import NotFound from './views/NotFound/NotFound';
+import { INITIAL_PAGE, POKEMONS_ON_PAGE } from './constants/constants';
 
 const App = () => {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
@@ -47,7 +48,7 @@ const App = () => {
 
       if (!trimmedQuery) {
         localStorage.removeItem('searchPokemon');
-        handleFetchData();
+        await handleFetchData();
         setShowPagination(false);
         return;
       }
@@ -77,11 +78,21 @@ const App = () => {
 
   useLSSavedSearch(handleFetchData, handleSearchData);
 
-  const { currentData, page, totalPages, nextPage, prevPage } = usePagination(
-    pokemons,
-    1,
-    20
-  );
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlPage = parseInt(searchParams.get('page') || '1');
+
+  const { currentData, page, totalPages, setPage, nextPage, prevPage } =
+    usePagination(pokemons, urlPage, POKEMONS_ON_PAGE);
+
+  useEffect(() => {
+    setSearchParams({ page: page.toString() });
+  }, [page, setSearchParams]);
+
+  useEffect(() => {
+    if (pokemons.length > 0 && totalPages > 0 && urlPage !== page) {
+      setPage(urlPage);
+    }
+  }, [urlPage, pokemons, page, setPage, totalPages]);
 
   const location = useLocation();
   const isNotFound = location.pathname !== '/';
@@ -113,13 +124,12 @@ const App = () => {
               <Route path="/" element={<Main pokemons={currentData} />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-
             {showPagination && !isNotFound && currentData.length > 0 && (
               <div className="pagination">
                 <button
                   className="pagination-button"
                   onClick={prevPage}
-                  disabled={page === 1}
+                  disabled={page === INITIAL_PAGE}
                 >
                   Prev
                 </button>
