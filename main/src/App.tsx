@@ -88,8 +88,8 @@ const App = () => {
   );
 
   useEffect(() => {
-    setSearchParams({ page: page.toString() });
-  }, [page, setSearchParams]);
+    setSearchParams({ page: page.toString(), q: searchQuery });
+  }, [page, searchQuery, setSearchParams]);
 
   const location = useLocation();
   const isNotFound = location.pathname !== '/';
