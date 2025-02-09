@@ -114,7 +114,7 @@ const CardDetails = () => {
                     <img src="../assets/img/straighten.svg" alt="height" />
                     <span className="details-attr-data">
                       {pokemonData.height / 10}
-                      {' kg'}
+                      {' m'}
                     </span>
                   </div>
                   <span className="details-attr-text">Height</span>
