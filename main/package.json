@@ -10,7 +10,9 @@
     "lint:fix": "eslint ./src --fix",
     "preview": "vite preview",
     "prepare": "cd .. && husky main/.husky",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "coverage": "vitest --coverage"
   },
   "dependencies": {
     "react": "^18.3.1",
