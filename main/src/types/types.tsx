@@ -8,9 +8,9 @@ export type ButtonProps = {
 };
 
 export type SearchBarProps = {
-  className: string;
-  type: string;
-  placeholder: string;
+  className?: string;
+  type?: string;
+  placeholder?: string;
   onSearch: (searchQuery: string) => void;
   searchQuery: string;
   onInputChange: (searchQuery: string) => void;
