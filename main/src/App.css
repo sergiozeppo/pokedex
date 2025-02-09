@@ -14,6 +14,11 @@ body {
   background-color: var(--primary-bg);
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .container {
   display: flex;
   margin: 0 auto;
@@ -33,21 +38,6 @@ body {
   100% {
     transform: rotate(360deg) translateY(0);
   }
-}
-
-.pokeball-loader-container {
-  width: 100%;
-  height: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.pokeball-loader {
-  width: 100px;
-  height: 100px;
-  background: url('/assets/img/loader.png') no-repeat center/contain;
-  animation: spin 1.5s linear infinite;
 }
 
 .broken {

@@ -1,13 +1,9 @@
-main {
-  display: flex;
-  padding: 12px;
-  width: 100%;
-}
-.error-button {
-  background-color: #ff854d;
-  color: var(--secondary-bg);
+.main-container {
+  padding: 20px;
 }
 
-.error-button:hover {
-  background-color: #e60000;
+.content-wrapper {
+  display: flex;
+  gap: 40px;
+  transition: all 0.3s ease;
 }

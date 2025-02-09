@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router';
 import { fetchPokemonDetails } from '../../services/api';
 import './Card.css';
 import { PokemonData } from '../../types/types';
@@ -45,22 +46,24 @@ const Card = ({ name }: CardProps) => {
   const formattedId = `#${id.toString().padStart(3, '0')}`;
 
   return (
-    <div className="card">
-      {isLoading ? (
-        <CardLoader />
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <>
-          <span className="card-number">{formattedId}</span>
-          <img className="card-img" src={imageUrl} alt={name} />
-          <div className="card-title">
-            <h3>{name}</h3>
-            <p>Abilities: {abilities.join(', ')}</p>
-          </div>
-        </>
-      )}
-    </div>
+    <Link to={`/pokemon/${name}`}>
+      <div className="card">
+        {isLoading ? (
+          <CardLoader />
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <>
+            <span className="card-number">{formattedId}</span>
+            <img className="card-img" src={imageUrl} alt={name} />
+            <div className="card-title">
+              <h3>{name}</h3>
+              <p>Abilities: {abilities.join(', ')}</p>
+            </div>
+          </>
+        )}
+      </div>
+    </Link>
   );
 };
 

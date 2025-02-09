@@ -1,5 +1,11 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { Route, Routes, useLocation, useSearchParams } from 'react-router';
+import {
+  Route,
+  Routes,
+  useLocation,
+  useSearchParams,
+  Navigate,
+} from 'react-router';
 import Header from './views/Header/Header';
 import { fetchData, fetchSearchData } from './services/api';
 import './App.css';
@@ -10,6 +16,8 @@ import useLSSavedSearch from './utils/useLSSavedSearch/useLSSavedSearch';
 import { usePagination } from './utils/usePagination/usePagination';
 import NotFound from './views/NotFound/NotFound';
 import { INITIAL_PAGE, POKEMONS_ON_PAGE } from './constants/constants';
+import CardDetails from './views/CardDetails/CardDetails';
+import PokeLoader from './components/PokeLoader/PokeLoader';
 
 const App = () => {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
@@ -92,7 +100,7 @@ const App = () => {
   }, [page, searchQuery, setSearchParams]);
 
   const location = useLocation();
-  const isNotFound = location.pathname !== '/';
+  const isNotFound = location.pathname === '/404';
 
   return (
     <div className="container">
@@ -103,9 +111,7 @@ const App = () => {
           onInputChange={handleInputChange}
         />
         {isFetching ? (
-          <div className="pokeball-loader-container">
-            <div className="pokeball-loader"></div>
-          </div>
+          <PokeLoader />
         ) : error ? (
           <div className="broken">
             <img
@@ -118,9 +124,18 @@ const App = () => {
         ) : (
           <>
             <Routes>
-              <Route path="/" element={<Main pokemons={currentData} />} />
-              <Route path="*" element={<NotFound />} />
+              <Route
+                path="/"
+                element={
+                  <Main pokemons={currentData} isFetching={isFetching} />
+                }
+              >
+                <Route path="pokemon/:name" element={<CardDetails />} />
+              </Route>
+              <Route path="/404" element={<NotFound />} />
+              <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
+
             {showPagination && !isNotFound && currentData.length > 0 && (
               <div className="pagination">
                 <button

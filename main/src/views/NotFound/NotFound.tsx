@@ -1,6 +1,15 @@
-import { Link } from 'react-router';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router';
 
 export default function NotFound() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (window.location.pathname !== '/404') {
+      navigate('/404', { replace: true });
+    }
+  }, [navigate]);
+
   return (
     <div className="error-container">
       <img

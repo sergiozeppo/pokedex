@@ -1,0 +1,25 @@
+.card-details {
+  position: relative;
+  height: fit-content;
+  width: 400px;
+  min-width: 400px;
+  background: white;
+  padding: 20px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  border-left: 2px solid #dc0a2d;
+}
+
+.close-button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #dc0a2d;
+  z-index: 1;
+}
+
+.card-list {
+  flex: 1;
+  transition: all 0.3s ease;
+}
