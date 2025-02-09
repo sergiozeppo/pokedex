@@ -1,8 +1,7 @@
 .card {
   display: flex;
-  max-width: 250px;
+  width: 250px;
   max-height: 350px;
-  width: 100%;
   height: 100%;
   flex: 1 1 30%;
   flex-direction: column;
@@ -15,6 +14,7 @@
 .card-number {
   display: flex;
   padding: 10px 8px 0px 8px;
+  font-size: 18px;
   justify-content: flex-end;
   align-items: flex-start;
   gap: 8px;

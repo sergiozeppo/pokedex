@@ -27,7 +27,7 @@ const Card = ({ name }: CardProps) => {
           pokemonData.sprites.other.dream_world.front_default ||
             pokemonData.sprites.other['official-artwork'].front_default ||
             pokemonData.sprites.front_default ||
-            './assets/img/poke-loader.png'
+            '../assets/img/poke-loader.png'
         );
         setAbilities(
           pokemonData.abilities.map((ability) => ability.ability.name)
@@ -46,7 +46,7 @@ const Card = ({ name }: CardProps) => {
   const formattedId = `#${id.toString().padStart(3, '0')}`;
 
   return (
-    <Link to={`/pokemon/${name}`}>
+    <Link to={`/pokemon/${name}`} onClick={(e) => e.stopPropagation()}>
       <div className="card">
         {isLoading ? (
           <CardLoader />
@@ -62,7 +62,7 @@ const Card = ({ name }: CardProps) => {
             </div>
           </>
         )}
-      </div>
+      </div>{' '}
     </Link>
   );
 };
