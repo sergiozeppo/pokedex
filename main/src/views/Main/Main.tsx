@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Outlet } from 'react-router';
 import CardList from '../../components/CardList/CardList';
 import './Main.css';
 import { Pokemon } from '../../types/types';
@@ -8,16 +8,15 @@ type MainProps = {
   isFetching: boolean;
 };
 
-class Main extends Component<MainProps> {
-  render(): ReactNode {
-    const { pokemons, isFetching } = this.props;
-
-    return (
-      <main>
+function Main({ pokemons, isFetching }: MainProps) {
+  return (
+    <main className="main-container">
+      <div className="content-wrapper">
         <CardList pokemons={pokemons} isFetching={isFetching} />
-      </main>
-    );
-  }
+        <Outlet />
+      </div>
+    </main>
+  );
 }
 
 export default Main;
