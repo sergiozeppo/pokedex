@@ -71,19 +71,24 @@ const Card = ({ name }: CardProps) => {
         <p>{error}</p>
       ) : (
         <>
-          <div className="checkbox-cont">
-            <label className="red-checkbox">
-              <input
-                className="card-checkbox"
-                type="checkbox"
-                checked={selectedPokemons.includes(name)}
-                onChange={() => handleCheckboxChange(name)}
-              />
-              <span></span>
-            </label>
-            <span className="card-number">{formattedId}</span>
-          </div>
           <Link to={`/pokemon/${name}`} onClick={(e) => e.stopPropagation()}>
+            <div className="checkbox-cont">
+              <label
+                className="red-checkbox"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <input
+                  className="card-checkbox"
+                  type="checkbox"
+                  checked={selectedPokemons.includes(name)}
+                  onChange={() => handleCheckboxChange(name)}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <span></span>
+              </label>
+              <span className="card-number">{formattedId}</span>
+            </div>
+
             <img className="card-img" src={imageUrl} alt={name} />
             <div className="card-title">
               <h3>{name}</h3>
