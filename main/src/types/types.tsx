@@ -21,6 +21,13 @@ export type Pokemon = {
   url?: string;
 };
 
+export interface PokemonDetails {
+  id: number;
+  name: string;
+  imageUrl: string;
+  abilities: string[];
+}
+
 export interface PokemonData {
   stats: BaseStat[];
   moves: Move[];

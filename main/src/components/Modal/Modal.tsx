@@ -3,12 +3,50 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { clearSelectedPokemons } from '../../store/reducers/selectedPokemonsSlice';
 import './Modal.css';
+import { useEffect, useState } from 'react';
 
 const Modal = () => {
   const dispatch = useDispatch();
   const selectedPokemons = useSelector(
     (state: RootState) => state.selectedPokemonsSlice
   );
+  const [csv, setCsv] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedPokemons.length === 0) return;
+
+    const headers = ['ID', 'Name', 'Abilities', 'Image'];
+    const csvRows = [
+      headers.join(','),
+      ...selectedPokemons.map((pokemon) =>
+        [
+          pokemon.id,
+          pokemon.name,
+          pokemon.abilities.join(' | '),
+          pokemon.imageUrl,
+        ]
+          .map((value) => `"${value}"`)
+          .join(',')
+      ),
+    ];
+
+    setCsv(csvRows.join('\n'));
+  }, [selectedPokemons]);
+
+  const handleDownloadCsv = () => {
+    if (!csv) return;
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const fileName = `${selectedPokemons.length}_pokemons.csv`;
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
 
   if (selectedPokemons.length === 0) return null;
 
@@ -31,7 +69,7 @@ const Modal = () => {
               <p>Here they are:</p>
             )}
             {[...selectedPokemons].reverse().map((pokemon, idx) => (
-              <h3 key={idx}>{pokemon}</h3>
+              <h3 key={idx}>{pokemon.name}</h3>
             ))}
           </>
         ) : (
@@ -41,7 +79,7 @@ const Modal = () => {
               .slice(-3)
               .reverse()
               .map((pokemon, idx) => (
-                <h3 key={idx}>{pokemon}</h3>
+                <h3 key={idx}>{pokemon.name}</h3>
               ))}
           </>
         )}
@@ -52,7 +90,9 @@ const Modal = () => {
           >
             Unselect all
           </button>
-          <button className="modal-button">Download</button>
+          <button className="modal-button" onClick={handleDownloadCsv}>
+            Download
+          </button>
         </div>
       </div>
     </div>

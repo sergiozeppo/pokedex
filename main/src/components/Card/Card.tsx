@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { fetchPokemonDetails } from '../../services/api';
 import './Card.css';
-import { PokemonData } from '../../types/types';
+import { PokemonData, PokemonDetails } from '../../types/types';
 import CardLoader from '../CardLoader/CardLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -26,9 +26,9 @@ const Card = ({ name }: CardProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCheckboxChange = (pokemon: string) => {
-    if (selectedPokemons.includes(pokemon)) {
-      dispatch(unselectPokemon(pokemon));
+  const handleCheckboxChange = (pokemon: PokemonDetails) => {
+    if (selectedPokemons.some((poke) => poke.id === pokemon.id)) {
+      dispatch(unselectPokemon(pokemon.id));
     } else {
       dispatch(selectPokemon(pokemon));
     }
@@ -80,8 +80,10 @@ const Card = ({ name }: CardProps) => {
                 <input
                   className="card-checkbox"
                   type="checkbox"
-                  checked={selectedPokemons.includes(name)}
-                  onChange={() => handleCheckboxChange(name)}
+                  checked={selectedPokemons.some((poke) => poke.id === id)}
+                  onChange={() =>
+                    handleCheckboxChange({ id, name, imageUrl, abilities })
+                  }
                   onClick={(e) => e.stopPropagation()}
                 />
                 <span></span>
