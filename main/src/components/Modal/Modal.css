@@ -47,3 +47,7 @@
   object-fit: cover;
   object-position: bottom center;
 }
+
+.download-link-without-DOM {
+  display: none;
+}

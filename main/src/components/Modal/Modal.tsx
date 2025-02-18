@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { clearSelectedPokemons } from '../../store/reducers/selectedPokemonsSlice';
 import './Modal.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Modal = () => {
   const dispatch = useDispatch();
   const selectedPokemons = useSelector(
     (state: RootState) => state.selectedPokemonsSlice
   );
+  const downloadWithoutDOMRef = useRef<HTMLAnchorElement>(null);
   const [csv, setCsv] = useState<string | null>(null);
 
   useEffect(() => {
@@ -40,10 +41,11 @@ const Modal = () => {
     const url = URL.createObjectURL(blob);
     const fileName = `${selectedPokemons.length}_pokemons.csv`;
 
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    link.click();
+    if (downloadWithoutDOMRef.current) {
+      downloadWithoutDOMRef.current.href = url;
+      downloadWithoutDOMRef.current.download = fileName;
+      downloadWithoutDOMRef.current.click();
+    }
 
     URL.revokeObjectURL(url);
   };
@@ -93,6 +95,10 @@ const Modal = () => {
           <button className="modal-button" onClick={handleDownloadCsv}>
             Download
           </button>
+          <a
+            className="download-link-without-DOM"
+            ref={downloadWithoutDOMRef}
+          />
         </div>
       </div>
     </div>
