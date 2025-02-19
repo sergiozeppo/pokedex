@@ -100,7 +100,11 @@ const CardDetails = () => {
               <div className="details-attributes">
                 <div className="details-attr-section">
                   <div className="details-attr">
-                    <img src="../assets/img/weight.svg" alt="weight" />
+                    <img
+                      className="details-img-weight"
+                      src="../assets/img/weight.svg"
+                      alt="weight"
+                    />
                     <span className="details-attr-data">
                       {pokemonData.weight / 10}
                       {' kg'}
@@ -111,7 +115,11 @@ const CardDetails = () => {
                 <span className="divider" />
                 <div className="details-attr-section">
                   <div className="details-attr">
-                    <img src="../assets/img/straighten.svg" alt="height" />
+                    <img
+                      className="details-img-height"
+                      src="../assets/img/straighten.svg"
+                      alt="height"
+                    />
                     <span className="details-attr-data">
                       {pokemonData.height / 10}
                       {' m'}

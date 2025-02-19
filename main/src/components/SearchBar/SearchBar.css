@@ -14,11 +14,11 @@
   background:
     url('/assets/img/search.svg') no-repeat 10px center / 20px,
     var(--secondary-bg);
-  color: #333;
+  color: var(--text-attr);
   outline: none;
   flex: 1;
 }
 
 .search-input::placeholder {
-  color: #aaa;
+  color: var(--placeholder-color);
 }
