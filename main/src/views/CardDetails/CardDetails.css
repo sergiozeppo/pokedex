@@ -248,3 +248,15 @@
   font-weight: 400;
   line-height: 16px;
 }
+
+.details-img-weight {
+  background-color: var(--text-attr);
+  mask-image: url('../assets/img/weight.svg');
+  -webkit-mask-image: url('../assets/img/weight.svg');
+}
+
+.details-img-height {
+  background-color: var(--text-attr);
+  mask-image: url('../assets/img/straighten.svg');
+  -webkit-mask-image: url('../assets/img/straighten.svg');
+}
