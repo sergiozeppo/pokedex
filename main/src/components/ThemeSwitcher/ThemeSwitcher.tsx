@@ -12,7 +12,7 @@ export const ThemeSwitcher = () => {
 
   return (
     <button onClick={() => themeContext.toggleTheme()}>
-      {themeContext.theme === 'light' ? '🌙' : '☀️'}
+      {themeContext.theme === 'light' ? 'to dark' : 'to light'}
     </button>
   );
 };
