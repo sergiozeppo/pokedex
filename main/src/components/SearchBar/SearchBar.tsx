@@ -2,6 +2,7 @@ import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { SearchBarProps } from '../../types/types';
 import './SearchBar.css';
 import Button from '../Button/Button';
+import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
 
 function SearchBar({ onSearch, searchQuery, onInputChange }: SearchBarProps) {
   const [hasError, setHasError] = useState(false);
@@ -41,6 +42,7 @@ function SearchBar({ onSearch, searchQuery, onInputChange }: SearchBarProps) {
       <Button className="button" title="Search" onClick={handleSearchClick}>
         Search
       </Button>
+      <ThemeSwitcher />
       <button className="error-button" onClick={handleClick}>
         ERROR!
       </button>
