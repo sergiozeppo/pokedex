@@ -1,4 +1,3 @@
-// components/Flyout.tsx
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { clearSelectedPokemons } from '../../store/reducers/selectedPokemonsSlice';
