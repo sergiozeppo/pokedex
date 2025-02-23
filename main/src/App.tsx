@@ -1,142 +1,99 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import {
-  Route,
-  Routes,
-  useLocation,
-  useSearchParams,
-  Navigate,
-} from 'react-router';
+import { useState, useEffect } from 'react';
+import { Route, Routes, useSearchParams, Navigate } from 'react-router-dom';
 import Header from './views/Header/Header';
-import { fetchData, fetchSearchData } from './services/api';
 import './App.css';
 import Main from './views/Main/Main';
-import { Pokemon } from './types/types';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-import useLSSavedSearch from './utils/useLSSavedSearch/useLSSavedSearch';
 import { usePagination } from './utils/usePagination/usePagination';
 import NotFound from './views/NotFound/NotFound';
 import { INITIAL_PAGE, POKEMONS_ON_PAGE } from './constants/constants';
-import CardDetails from './views/CardDetails/CardDetails';
 import PokeLoader from './components/PokeLoader/PokeLoader';
+import { useGetPokemonsQuery, useSearchPokemonsQuery } from './services/api';
+import CardDetails from './views/CardDetails/CardDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from './store';
+import { setAllPokemons } from './store/reducers/allPokemonsSlice';
+import { setCurrentPokemons } from './store/reducers/currentPokemonsSlice';
+import { Pokemon } from './types/types';
 
 const App = () => {
-  const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
-  const [error, setError] = useState<Error | null>(null);
-  const [isFetching, setIsFetching] = useState(false);
-  const [showPagination, setShowPagination] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const allPokemonsRef = useRef<Pokemon[]>([]);
-  allPokemonsRef.current = allPokemons;
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading);
+  const {
+    data: allPokemons = [],
+    isError,
+    error,
+  } = useGetPokemonsQuery(undefined);
 
-  const handleFetchData = useCallback(async () => {
-    setIsFetching(true);
-    setError(null);
-    setShowPagination(false);
-    try {
-      const data = await fetchData();
-      setAllPokemons(data);
-      setPokemons(data);
-      setShowPagination(true);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
-      setShowPagination(false);
-    } finally {
-      setIsFetching(false);
+  useEffect(() => {
+    if (allPokemons) {
+      dispatch(setAllPokemons(allPokemons));
     }
-  }, []);
+  }, [allPokemons, dispatch]);
 
-  const handleSearchData = useCallback(
-    async (searchData: string) => {
-      const trimmedQuery = searchData.trim();
-      setIsFetching(true);
-      setError(null);
-      setShowPagination(false);
-      setSearchQuery(trimmedQuery);
-
-      if (!trimmedQuery) {
-        localStorage.removeItem('searchPokemon');
-        await handleFetchData();
-        return;
-      }
-
-      try {
-        const filteredPokemons = await fetchSearchData(
-          trimmedQuery,
-          allPokemonsRef.current
-        );
-        setPokemons(filteredPokemons);
-        setShowPagination(true);
-        localStorage.setItem('searchPokemon', trimmedQuery);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error'));
-        setPokemons([]);
-        setShowPagination(false);
-      } finally {
-        setIsFetching(false);
-      }
-    },
-    [handleFetchData]
-  );
-
-  const handleInputChange = useCallback((query: string) => {
-    setSearchQuery(query);
-  }, []);
-
-  useLSSavedSearch(handleFetchData, handleSearchData);
-
+  const [showPagination, setShowPagination] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = parseInt(
     searchParams.get('page') || INITIAL_PAGE.toString()
   );
+
+  const searchQuery = useSelector(
+    (state: RootState) => state.searchQuerySlice.value
+  );
+  const trimmedQuery = searchQuery.trim();
+  const getAllResult = useGetPokemonsQuery(undefined, {
+    skip: trimmedQuery !== '',
+  });
+  const searchResult = useSearchPokemonsQuery(trimmedQuery, {
+    skip: trimmedQuery === '',
+  });
+
+  const currentInitData =
+    trimmedQuery !== '' ? searchResult.data : getAllResult.data;
+
   const { currentData, page, totalPages, nextPage, prevPage } = usePagination(
-    pokemons,
+    currentInitData || (allPokemons as Pokemon[]),
     initialPage,
     POKEMONS_ON_PAGE
   );
 
   useEffect(() => {
+    if (currentData) {
+      setShowPagination(false);
+      dispatch(setCurrentPokemons(currentData));
+      setShowPagination(true);
+    }
+  }, [currentData, dispatch]);
+
+  useEffect(() => {
     setSearchParams({ page: page.toString(), q: searchQuery });
   }, [page, searchQuery, setSearchParams]);
-
-  const location = useLocation();
-  const isNotFound = location.pathname === '/404';
 
   return (
     <div className="container">
       <ErrorBoundary>
-        <Header
-          onSearch={handleSearchData}
-          searchQuery={searchQuery}
-          onInputChange={handleInputChange}
-        />
-        {isFetching ? (
+        <Header />
+        {isLoading ? (
           <PokeLoader />
-        ) : error ? (
+        ) : isError ? (
           <div className="broken">
             <img
               className="broken-pokeball"
               src="/assets/img/broken-pokeball.png"
               alt=""
             />
-            <span>Error: {error.message}</span>
+            <span>Error: {(error as Error).message}</span>
           </div>
         ) : (
           <>
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Main pokemons={currentData} isFetching={isFetching} />
-                }
-              >
+              <Route path="/" element={<Main />}>
                 <Route path="pokemon/:name" element={<CardDetails />} />
               </Route>
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
-
-            {showPagination && !isNotFound && currentData.length > 0 && (
+            {!isLoading && showPagination && currentData.length > 0 && (
               <div className="pagination">
                 <button
                   className="pagination-button"

@@ -1,27 +1,34 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
-import { SearchBarProps } from '../../types/types';
 import './SearchBar.css';
 import Button from '../Button/Button';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
+import { useDispatch } from 'react-redux';
+import { useSearchQuery } from '../../utils/useSearchQuery/useSearchQuery';
+import { setSearchQuery } from '../../store/reducers/searchQuerySlice';
 
-function SearchBar({ onSearch, searchQuery, onInputChange }: SearchBarProps) {
+function SearchBar() {
+  const dispatch = useDispatch();
   const [hasError, setHasError] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const { updateSearchQuery } = useSearchQuery();
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onInputChange(event.target.value);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      onSearch(searchQuery);
+      dispatch(setSearchQuery(inputValue.trim()));
+      updateSearchQuery(inputValue.trim());
     }
   };
 
   const handleSearchClick = () => {
-    onSearch(searchQuery);
+    dispatch(setSearchQuery(inputValue.trim()));
+    updateSearchQuery(inputValue.trim());
   };
 
-  const handleClick = () => {
+  const handleErrorClick = () => {
     setHasError(true);
   };
 
@@ -33,9 +40,9 @@ function SearchBar({ onSearch, searchQuery, onInputChange }: SearchBarProps) {
     <div className="search-bar">
       <input
         className="search-input"
-        value={searchQuery}
         type="text"
         placeholder="Search"
+        value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
@@ -43,7 +50,7 @@ function SearchBar({ onSearch, searchQuery, onInputChange }: SearchBarProps) {
         Search
       </Button>
       <ThemeSwitcher />
-      <button className="error-button" onClick={handleClick}>
+      <button className="error-button" onClick={handleErrorClick}>
         ERROR!
       </button>
     </div>
