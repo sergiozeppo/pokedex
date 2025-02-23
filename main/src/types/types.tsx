@@ -7,19 +7,17 @@ export type ButtonProps = {
   onClick: () => void;
 };
 
-export type SearchBarProps = {
-  className?: string;
-  type?: string;
-  placeholder?: string;
-  onSearch: (searchQuery: string) => void;
-  searchQuery: string;
-  onInputChange: (searchQuery: string) => void;
-};
-
 export type Pokemon = {
   name: string;
   url?: string;
 };
+
+export interface PokemonDetails {
+  id: number;
+  name: string;
+  imageUrl: string;
+  abilities: string[];
+}
 
 export interface PokemonData {
   stats: BaseStat[];
@@ -29,7 +27,7 @@ export interface PokemonData {
   id: number;
   name: string;
   abilities: Ability[];
-  sprites: {
+  sprites?: {
     front_default: string;
     other: {
       dream_world: {
@@ -40,6 +38,7 @@ export interface PokemonData {
       };
     };
   };
+  imageUrl?: string;
   types: PokemonTypeObject[];
 }
 

@@ -10,17 +10,7 @@
   gap: 20px;
   border-radius: 8px;
   background: var(--secondary-bg);
-  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.25) inset;
-}
-
-.close-button {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  font-size: 2rem;
-  text-decoration: none;
-  color: #dc0a2d;
-  z-index: 1;
+  box-shadow: var(--box-shadow-inset);
 }
 
 .card-list {
@@ -105,7 +95,7 @@
   align-self: stretch;
   background-color: var(--secondary-bg);
   border-radius: 8px;
-  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.25) inset;
+  box-shadow: var(--box-shadow-inset);
 }
 
 .details-types {
@@ -122,7 +112,6 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 10px;
-  background: var(--Pokmon-Type-Grass, #74cb48);
 }
 
 .details-type-name {
@@ -143,7 +132,7 @@
   display: flex;
   align-items: flex-start;
   align-self: stretch;
-  color: var(--text-dark);
+  color: var(--text-attr);
 }
 
 .details-attr-section {
@@ -164,7 +153,7 @@
 }
 
 .details-attr-text {
-  color: #666;
+  color: var(--text-attr);
   text-align: center;
   align-self: stretch;
   font-size: 12px;
@@ -174,7 +163,7 @@
 }
 
 .details-attr-data {
-  color: var(--text-dark);
+  color: var(--text-attr);
   text-align: justify;
   font-size: 16px;
   font-weight: 400;
@@ -190,7 +179,7 @@
 }
 
 .details-attr-moves-text {
-  color: var(--text-dark);
+  color: var(--text-attr);
   text-transform: capitalize;
   text-align: justify;
   font-size: 12px;
@@ -202,7 +191,7 @@
   width: 1px;
   height: 48px;
   align-self: stretch;
-  background: #e0e0e0;
+  background: var(--divider);
 }
 
 .details-stats {
@@ -233,7 +222,7 @@
   width: 1px;
   align-self: stretch;
   height: 140px;
-  background: #e0e0e0;
+  background: var(--divider);
 }
 
 .data-list {
@@ -252,10 +241,22 @@
 }
 
 .stat-value {
-  color: var(--text-dark);
+  color: var(--text-attr);
   align-self: flex-start;
   width: 25px;
   font-size: 10px;
   font-weight: 400;
   line-height: 16px;
+}
+
+.details-img-weight {
+  background-color: var(--text-attr);
+  mask-image: url('../assets/img/weight.svg');
+  -webkit-mask-image: url('../assets/img/weight.svg');
+}
+
+.details-img-height {
+  background-color: var(--text-attr);
+  mask-image: url('../assets/img/straighten.svg');
+  -webkit-mask-image: url('../assets/img/straighten.svg');
 }
