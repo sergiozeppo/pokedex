@@ -31,7 +31,7 @@ const CardDetails = () => {
       style={{ background: colorsArray[0]?.primary || '#ccc' }}
     >
       {isLoading ? (
-        <PokeLoader />
+        <PokeLoader data-testid="poke-loader" />
       ) : isError ? (
         <div className="error">
           {(error as Error)?.message || 'Failed to load Pokémon details'}
@@ -63,7 +63,12 @@ const CardDetails = () => {
                     className="details-type"
                     style={{ background: colorsArray[index].primary }}
                   >
-                    <span className="details-type-name">{type.type.name}</span>
+                    <span
+                      className="details-type-name"
+                      data-testid="pokemon-type"
+                    >
+                      {type.type.name}
+                    </span>
                   </div>
                 ))}
               </div>
