@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react';
-import { Route, Routes, useSearchParams, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Header from './views/Header/Header';
 import './App.css';
-import Main from './views/Main/Main';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { usePagination } from './utils/usePagination/usePagination';
-import NotFound from './views/NotFound/NotFound';
 import { INITIAL_PAGE, POKEMONS_ON_PAGE } from './constants/constants';
 import PokeLoader from './components/PokeLoader/PokeLoader';
 import { useGetPokemonsQuery, useSearchPokemonsQuery } from './services/api';
-import CardDetails from './views/CardDetails/CardDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store';
 import { setAllPokemons } from './store/reducers/allPokemonsSlice';
 import { setCurrentPokemons } from './store/reducers/currentPokemonsSlice';
 import { Pokemon } from './types/types';
+import AppRoutes from './components/AppRoutes/AppRoutes';
+import PaginationControls from './components/PaginationControls/PaginationControls';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -31,7 +30,6 @@ const App = () => {
     }
   }, [allPokemons, dispatch]);
 
-  const [showPagination, setShowPagination] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = parseInt(
     searchParams.get('page') || INITIAL_PAGE.toString()
@@ -59,9 +57,7 @@ const App = () => {
 
   useEffect(() => {
     if (currentData) {
-      setShowPagination(false);
       dispatch(setCurrentPokemons(currentData));
-      setShowPagination(true);
     }
   }, [currentData, dispatch]);
 
@@ -86,33 +82,14 @@ const App = () => {
           </div>
         ) : (
           <>
-            <Routes>
-              <Route path="/" element={<Main />}>
-                <Route path="pokemon/:name" element={<CardDetails />} />
-              </Route>
-              <Route path="/404" element={<NotFound />} />
-              <Route path="*" element={<Navigate to="/404" replace />} />
-            </Routes>
-            {!isLoading && showPagination && currentData.length > 0 && (
-              <div className="pagination">
-                <button
-                  className="pagination-button"
-                  onClick={prevPage}
-                  disabled={page === INITIAL_PAGE}
-                >
-                  Prev
-                </button>
-                <span>
-                  {page} / {totalPages}
-                </span>
-                <button
-                  className="pagination-button"
-                  onClick={nextPage}
-                  disabled={page === totalPages}
-                >
-                  Next
-                </button>
-              </div>
+            <AppRoutes />
+            {!isLoading && currentData.length > 0 && (
+              <PaginationControls
+                page={page}
+                totalPages={totalPages}
+                nextPage={nextPage}
+                prevPage={prevPage}
+              />
             )}
           </>
         )}
