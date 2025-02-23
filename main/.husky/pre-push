@@ -1,1 +1,1 @@
-# cd main && npm run format && npm run lint && npm run test
+cd main && npm run format && npm run lint && npm run test
