@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PokemonDetails } from '../../types/types';
 
-type SelectedPokemonsState = PokemonDetails[];
+export type SelectedPokemonsState = PokemonDetails[];
 const initialState: SelectedPokemonsState = [];
 
 const selectedPokemonsSlice = createSlice({
