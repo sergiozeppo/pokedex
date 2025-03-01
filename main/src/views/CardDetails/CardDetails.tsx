@@ -1,29 +1,29 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import './CardDetails.css';
+// import { useParams, useNavigate } from 'react-router-dom';
+import './CardDetails.module.css';
 import { PokemonColorPair } from '../../types/types';
 import PokeLoader from '../../components/PokeLoader/PokeLoader';
 import { usePokemonBackground } from '../../utils/usePokemonBackground/usePokemonBackground';
 import { useGetPokemonOutletDetailsQuery } from '../../services/api';
 
 const CardDetails = () => {
-  const { name } = useParams<{ name: string }>();
+  // const { name } = useParams<{ name: string }>();
   const {
     data: pokemonData,
     isLoading,
     isError,
     error,
-  } = useGetPokemonOutletDetailsQuery(name || '');
-  const navigate = useNavigate();
+  } = useGetPokemonOutletDetailsQuery('');
+  // const navigate = useNavigate();
 
-  const handleClick = () => navigate('/');
+  // const handleClick = () => navigate('/');
   const colorsArray = usePokemonBackground(
     pokemonData?.types || []
   ) as PokemonColorPair[];
 
-  if (!name) return <div className="card-details">No Pokémon selected</div>;
+  // if (!name) return <div className="card-details">No Pokémon selected</div>;
 
   const id = `#${pokemonData?.id.toString().padStart(3, '0')}`;
-  const img = pokemonData?.imageUrl || '../assets/img/poke-loader.png';
+  const img = pokemonData?.imageUrl || '/assets/img/poke-loader.png';
 
   return (
     <div
@@ -41,7 +41,7 @@ const CardDetails = () => {
           <div className="details-container">
             <div className="details-header">
               <div className="details-title">
-                <div className="details-close" onClick={handleClick}></div>
+                <div className="details-close"></div>
                 <span className="details-h2">{pokemonData.name}</span>
                 <span className="details-id">{id}</span>
               </div>
@@ -85,7 +85,7 @@ const CardDetails = () => {
                   <div className="details-attr">
                     <img
                       className="details-img-weight"
-                      src="../assets/img/weight.svg"
+                      src="/assets/img/weight.svg"
                       alt="weight"
                     />
                     <span className="details-attr-data">
@@ -101,7 +101,7 @@ const CardDetails = () => {
                   <div className="details-attr">
                     <img
                       className="details-img-height"
-                      src="../assets/img/straighten.svg"
+                      src="/assets/img/straighten.svg"
                       alt="height"
                     />
                     <span className="details-attr-data">

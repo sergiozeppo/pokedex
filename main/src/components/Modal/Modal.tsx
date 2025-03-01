@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { clearSelectedPokemons } from '../../store/reducers/selectedPokemonsSlice';
-import './Modal.css';
+import './Modal.module.css';
 import { useEffect, useRef, useState } from 'react';
 
 const Modal = () => {
@@ -55,7 +55,7 @@ const Modal = () => {
     <div className="modal-container">
       <div className="modal-content">
         <div className="modal-img-cont">
-          <img src="../assets/img/select.gif" alt="" />
+          <img src="/assets/img/select.gif" alt="" />
         </div>
         <p>
           {selectedPokemons.length}{' '}

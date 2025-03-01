@@ -5,6 +5,7 @@ export interface SearchQueryState {
 }
 
 const getInitialQuery = (): string => {
+  if (typeof window === 'undefined') return '';
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get('q') || localStorage.getItem('searchPokemon') || '';
 };

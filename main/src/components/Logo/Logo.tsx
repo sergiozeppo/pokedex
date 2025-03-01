@@ -1,8 +1,8 @@
-import logo from '/assets/img/logo.svg';
-import './Logo.css';
+// import logo from '/assets/img/logo.svg';
+import './Logo.module.css';
 
 function Logo() {
-  return <img src={logo} alt="Pokedex Logo" className="logo" />;
+  return <img src="/assets/img/logo.svg" alt="Pokedex Logo" className="logo" />;
 }
 
 export default Logo;

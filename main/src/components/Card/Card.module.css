@@ -41,18 +41,6 @@
   background: var(--grayscale-bg);
 }
 
-h3 {
-  color: var(--text-dark);
-  text-transform: capitalize;
-  text-align: center;
-  flex: 1 0 0;
-  margin: 0;
-}
-p {
-  text-align: center;
-  margin: 0;
-}
-
 .checkbox-cont {
   display: flex;
   flex-direction: row;

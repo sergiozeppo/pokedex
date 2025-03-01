@@ -1,20 +1,23 @@
-import './CardList.css';
+import './CardList.module.css';
 import Card from '../Card/Card';
 import PokeLoader from '../PokeLoader/PokeLoader';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
 function CardList() {
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const currentPokemons = useSelector(
     (state: RootState) => state.currentPokemonsSlice.pokemons
   );
 
   return (
     <>
-      <div className="card-list" onClick={() => navigate('/')}>
+      <div
+        className="card-list"
+        // onClick={() => navigate('/')}
+      >
         {isLoading && <PokeLoader />}
         {Array.isArray(currentPokemons) &&
         currentPokemons.length > 0 &&

@@ -26,7 +26,7 @@
 .details-header {
   display: flex;
   flex-direction: column;
-  background: url('../assets/img/pokeball.svg');
+  background: url('/assets/img/pokeball.svg');
   background-repeat: no-repeat;
   background-position: right center;
   background-size: auto;
@@ -46,7 +46,7 @@
   display: flex;
   width: 32px;
   height: 32px;
-  background: url('../assets/img/close.svg');
+  background: url('/assets/img/close.svg');
 }
 
 .details-h2 {
@@ -251,12 +251,12 @@
 
 .details-img-weight {
   background-color: var(--text-attr);
-  mask-image: url('../assets/img/weight.svg');
-  -webkit-mask-image: url('../assets/img/weight.svg');
+  mask-image: url('/assets/img/weight.svg');
+  -webkit-mask-image: url('/assets/img/weight.svg');
 }
 
 .details-img-height {
   background-color: var(--text-attr);
-  mask-image: url('../assets/img/straighten.svg');
-  -webkit-mask-image: url('../assets/img/straighten.svg');
+  mask-image: url('/assets/img/straighten.svg');
+  -webkit-mask-image: url('/assets/img/straighten.svg');
 }

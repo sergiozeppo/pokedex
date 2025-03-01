@@ -1,5 +1,5 @@
 import { INITIAL_PAGE } from '../../constants/constants';
-import './PaginationControls.css';
+import './PaginationControls.module.css';
 
 export interface PaginationControlsProps {
   page: number;

@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import './Card.css';
+import './Card.module.css';
 import CardLoader from '../CardLoader/CardLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,6 +7,7 @@ import {
 } from '../../store/reducers/selectedPokemonsSlice';
 import { RootState } from '../../store';
 import { useGetPokemonDetailsQuery } from '../../services/api';
+import Link from 'next/link';
 
 type CardProps = {
   name: string;
@@ -42,7 +42,7 @@ const Card = ({ name }: CardProps) => {
         <p>Failed to load Pokémon details</p>
       ) : (
         <>
-          <Link to={`/pokemon/${name}`} onClick={(e) => e.stopPropagation()}>
+          <Link href={`/pokemon/${name}`} onClick={(e) => e.stopPropagation()}>
             <div className="checkbox-cont">
               <label
                 className="red-checkbox"

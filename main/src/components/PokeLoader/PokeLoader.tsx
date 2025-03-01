@@ -1,4 +1,4 @@
-import './PokeLoader.css';
+import './PokeLoader.module.css';
 
 export default function PokeLoader() {
   return (

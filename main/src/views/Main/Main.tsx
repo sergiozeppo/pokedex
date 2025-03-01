@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom';
+// import { Outlet } from 'react-router-dom';
 import CardList from '../../components/CardList/CardList';
-import './Main.css';
+import './Main.module.css';
 import Modal from '../../components/Modal/Modal';
 
 function Main() {
@@ -8,7 +8,7 @@ function Main() {
     <main className="main-container">
       <div className="content-wrapper">
         <CardList />
-        <Outlet />
+        {/* <Outlet /> */}
         <Modal />
       </div>
     </main>

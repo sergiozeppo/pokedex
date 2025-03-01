@@ -1,6 +1,6 @@
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Logo from '../../components/Logo/Logo';
-import './Header.css';
+import './Header.module.css';
 
 function Header() {
   return (

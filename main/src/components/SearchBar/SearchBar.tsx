@@ -1,5 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
-import './SearchBar.css';
+import './SearchBar.module.css';
 import Button from '../Button/Button';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
 import { useDispatch } from 'react-redux';
