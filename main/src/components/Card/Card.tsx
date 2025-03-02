@@ -1,4 +1,3 @@
-import './Card.module.css';
 import CardLoader from '../CardLoader/CardLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,6 +7,7 @@ import {
 import { RootState } from '../../store';
 import { useGetPokemonDetailsQuery } from '../../services/api';
 import Link from 'next/link';
+import styles from './Card.module.css';
 
 type CardProps = {
   name: string;
@@ -35,7 +35,7 @@ const Card = ({ name }: CardProps) => {
   const formattedId = `#${details.id.toString().padStart(3, '0')}`;
 
   return (
-    <div className="card">
+    <div className={styles.card}>
       {isLoading ? (
         <CardLoader />
       ) : isError ? (
@@ -43,13 +43,13 @@ const Card = ({ name }: CardProps) => {
       ) : (
         <>
           <Link href={`/pokemon/${name}`} onClick={(e) => e.stopPropagation()}>
-            <div className="checkbox-cont">
+            <div className={styles['checkbox-cont']}>
               <label
-                className="red-checkbox"
+                className={styles['red-checkbox']}
                 onClick={(e) => e.stopPropagation()}
               >
                 <input
-                  className="card-checkbox"
+                  className={styles['card-checkbox']}
                   type="checkbox"
                   checked={selectedPokemons.some(
                     (poke) => poke.id === details.id
@@ -59,11 +59,15 @@ const Card = ({ name }: CardProps) => {
                 />
                 <span></span>
               </label>
-              <span className="card-number">{formattedId}</span>
+              <span className={styles['card-number']}>{formattedId}</span>
             </div>
 
-            <img className="card-img" src={details.imageUrl} alt={name} />
-            <div className="card-title">
+            <img
+              className={styles['card-img']}
+              src={details.imageUrl}
+              alt={name}
+            />
+            <div className={styles['card-title']}>
               <h3>{name}</h3>
               <p>Abilities: {details.abilities.join(', ')}</p>
             </div>

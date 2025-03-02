@@ -1,10 +1,10 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
-import './SearchBar.module.css';
 import Button from '../Button/Button';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
 import { useDispatch } from 'react-redux';
 import { useSearchQuery } from '../../utils/useSearchQuery/useSearchQuery';
 import { setSearchQuery } from '../../store/reducers/searchQuerySlice';
+import styles from './SearchBar.module.css';
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -37,20 +37,24 @@ function SearchBar() {
   }
 
   return (
-    <div className="search-bar">
+    <div className={styles['search-bar']}>
       <input
-        className="search-input"
+        className={styles['search-input']}
         type="text"
         placeholder="Search"
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
-      <Button className="button" title="Search" onClick={handleSearchClick}>
+      <Button
+        className={styles.button}
+        title="Search"
+        onClick={handleSearchClick}
+      >
         Search
       </Button>
       <ThemeSwitcher />
-      <button className="error-button" onClick={handleErrorClick}>
+      <button className={styles['error-button']} onClick={handleErrorClick}>
         ERROR!
       </button>
     </div>

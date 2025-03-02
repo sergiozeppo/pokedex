@@ -1,5 +1,5 @@
 import { INITIAL_PAGE } from '../../constants/constants';
-import './PaginationControls.module.css';
+import styles from './PaginationControls.module.css';
 
 export interface PaginationControlsProps {
   page: number;
@@ -15,9 +15,9 @@ const PaginationControls = ({
   prevPage,
 }: PaginationControlsProps) => {
   return (
-    <div className="pagination">
+    <div className={styles.pagination}>
       <button
-        className="pagination-button"
+        className={styles['pagination-button']}
         onClick={prevPage}
         disabled={page === INITIAL_PAGE}
       >
@@ -27,7 +27,7 @@ const PaginationControls = ({
         {page} / {totalPages}
       </span>
       <button
-        className="pagination-button"
+        className={styles['pagination-button']}
         onClick={nextPage}
         disabled={page === totalPages}
       >

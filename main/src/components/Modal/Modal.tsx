@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { clearSelectedPokemons } from '../../store/reducers/selectedPokemonsSlice';
-import './Modal.module.css';
 import { useEffect, useRef, useState } from 'react';
+import styles from './Modal.module.css';
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -52,9 +52,9 @@ const Modal = () => {
   if (selectedPokemons.length === 0) return null;
 
   return (
-    <div className="modal-container">
-      <div className="modal-content">
-        <div className="modal-img-cont">
+    <div className={styles['modal-container']}>
+      <div className={styles['modal-content']}>
+        <div className={styles['modal-img-cont']}>
           <img src="/assets/img/select.gif" alt="" />
         </div>
         <p>
@@ -84,18 +84,21 @@ const Modal = () => {
               ))}
           </>
         )}
-        <div className="modal-buttons">
+        <div className={styles['modal-buttons']}>
           <button
             onClick={() => dispatch(clearSelectedPokemons())}
-            className="modal-button"
+            className={styles['modal-button']}
           >
             Unselect all
           </button>
-          <button className="modal-button" onClick={handleDownloadCsv}>
+          <button
+            className={styles['modal-button']}
+            onClick={handleDownloadCsv}
+          >
             Download
           </button>
           <a
-            className="download-link-without-DOM"
+            className={styles['download-link-without-DOM']}
             ref={downloadWithoutDOMRef}
           />
         </div>

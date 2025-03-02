@@ -1,9 +1,9 @@
-import './CardList.module.css';
 import Card from '../Card/Card';
 import PokeLoader from '../PokeLoader/PokeLoader';
 // import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import styles from './CardList.module.css';
 
 function CardList() {
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
@@ -15,7 +15,7 @@ function CardList() {
   return (
     <>
       <div
-        className="card-list"
+        className={styles['card-list']}
         // onClick={() => navigate('/')}
       >
         {isLoading && <PokeLoader />}

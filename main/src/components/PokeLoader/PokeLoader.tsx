@@ -1,9 +1,12 @@
-import './PokeLoader.module.css';
+import styles from './PokeLoader.module.css';
 
 export default function PokeLoader() {
   return (
-    <div className="pokeball-loader-container" data-testid="poke-loader">
-      <div className="pokeball-loader"></div>
+    <div
+      className={styles['pokeball-loader-container']}
+      data-testid="poke-loader"
+    >
+      <div className={styles['pokeball-loader']}></div>
     </div>
   );
 }

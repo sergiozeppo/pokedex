@@ -1,11 +1,11 @@
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Logo from '../../components/Logo/Logo';
-import './Header.module.css';
+import styles from './Header.module.css';
 
 function Header() {
   return (
     <header>
-      <div className="title">
+      <div className={styles.title}>
         <Logo />
         <span>Pokédex</span>
       </div>

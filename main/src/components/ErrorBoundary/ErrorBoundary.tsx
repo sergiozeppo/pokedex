@@ -1,5 +1,5 @@
 import { Component, ReactNode, ErrorInfo } from 'react';
-import './ErrorBoundary.module.css';
+import styles from './ErrorBoundary.module.css';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -38,16 +38,19 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (hasError) {
       return (
         fallback || (
-          <div className="error-container">
+          <div className={styles['error-container']}>
             <img
-              className="broken-pokeball"
+              className={styles['broken-pokeball']}
               src="/assets/img/broken-pokeball.png"
               alt=""
             />
 
             <h2>Something went wrong.</h2>
             <p>{error?.toString()}</p>
-            <button className="reset-button" onClick={this.handleClick}>
+            <button
+              className={styles['reset-button']}
+              onClick={this.handleClick}
+            >
               Try again
             </button>
           </div>
