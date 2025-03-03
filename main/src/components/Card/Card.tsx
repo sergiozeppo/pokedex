@@ -42,7 +42,11 @@ const Card = ({ name }: CardProps) => {
         <p>Failed to load Pokémon details</p>
       ) : (
         <>
-          <Link href={`/pokemon/${name}`} onClick={(e) => e.stopPropagation()}>
+          <Link
+            href={`/pokemon/${name}`}
+            shallow
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className={styles['checkbox-cont']}>
               <label
                 className={styles['red-checkbox']}

@@ -11,10 +11,9 @@ import { setAllPokemons } from '../src/store/reducers/allPokemonsSlice';
 import { setCurrentPokemons } from '../src/store/reducers/currentPokemonsSlice';
 import { Pokemon } from '../src/types/types';
 import { usePagination } from '../src/utils/usePagination/usePagination';
-import Header from '../src/views/Header/Header';
 import { RootState } from '../src/store';
 import Main from '../src/views/Main/Main';
-import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary';
+import RootLayout from './RootLayout';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -66,36 +65,33 @@ const App = () => {
   // }, [page, searchQuery, setSearchParams]);
 
   return (
-    <div className="container">
-      <ErrorBoundary>
-        <Header />
-        {isLoading ? (
-          <PokeLoader />
-        ) : isError ? (
-          <div className="broken">
-            <img
-              className="broken-pokeball"
-              src="/assets/img/broken-pokeball.png"
-              alt=""
+    <RootLayout>
+      {isLoading ? (
+        <PokeLoader />
+      ) : isError ? (
+        <div className="broken">
+          <img
+            className="broken-pokeball"
+            src="/assets/img/broken-pokeball.png"
+            alt=""
+          />
+          <span>Error: {(error as Error).message}</span>
+        </div>
+      ) : (
+        <>
+          {/* <AppRoutes /> */}
+          <Main />
+          {!isLoading && currentData.length > 0 && (
+            <PaginationControls
+              page={page}
+              totalPages={totalPages}
+              nextPage={nextPage}
+              prevPage={prevPage}
             />
-            <span>Error: {(error as Error).message}</span>
-          </div>
-        ) : (
-          <>
-            {/* <AppRoutes /> */}
-            <Main />
-            {!isLoading && currentData.length > 0 && (
-              <PaginationControls
-                page={page}
-                totalPages={totalPages}
-                nextPage={nextPage}
-                prevPage={prevPage}
-              />
-            )}
-          </>
-        )}
-      </ErrorBoundary>
-    </div>
+          )}
+        </>
+      )}
+    </RootLayout>
   );
 };
 

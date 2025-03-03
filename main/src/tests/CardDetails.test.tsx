@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
-import CardDetails from '../views/CardDetails/CardDetails';
+import CardDetails from '../../pages/pokemon/[name]';
 import { MemoryRouter } from 'react-router-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetPokemonOutletDetailsQuery } from '../services/api';

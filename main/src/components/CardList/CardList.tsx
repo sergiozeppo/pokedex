@@ -4,8 +4,12 @@ import PokeLoader from '../PokeLoader/PokeLoader';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import styles from './CardList.module.css';
+// import PokemonLayout from '../../../pages/pokemon/PokemonLayout';
+import { useRouter } from 'next/router';
 
 function CardList() {
+  const router = useRouter();
+  const pokename = router.query.name as string;
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
   // const navigate = useNavigate();
   const currentPokemons = useSelector(
@@ -29,6 +33,7 @@ function CardList() {
           <p>No Pokémon available.</p>
         )}
       </div>
+      {pokename && <p>{pokename}</p>}
     </>
   );
 }
