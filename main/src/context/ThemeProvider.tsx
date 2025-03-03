@@ -3,7 +3,12 @@ import { Theme, ThemeContext } from './ThemeContext';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const getTheme = (): Theme => {
-    return (localStorage.getItem('poke_theme') as Theme) || 'light';
+    const theme =
+      typeof window !== 'undefined'
+        ? (localStorage.getItem('poke_theme') as Theme)
+        : 'light';
+
+    return theme;
   };
 
   const [theme, setTheme] = useState<Theme>(getTheme);
@@ -13,8 +18,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    localStorage.setItem('poke_theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('poke_theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+    }
   }, [theme]);
 
   return (
