@@ -40,7 +40,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         fallback || (
           <div className={styles['error-container']}>
             <img
-              className={styles['broken-pokeball']}
+              className="broken-pokeball"
               src="/assets/img/broken-pokeball.png"
               alt=""
             />

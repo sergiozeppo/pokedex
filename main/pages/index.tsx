@@ -1,4 +1,3 @@
-// import ErrorBoundary from 'next/dist/client/components/error-boundary';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import AppRoutes from '../src/components/AppRoutes/AppRoutes';
@@ -16,6 +15,7 @@ import { usePagination } from '../src/utils/usePagination/usePagination';
 import Header from '../src/views/Header/Header';
 import { RootState } from '../src/store';
 import Main from '../src/views/Main/Main';
+import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -68,35 +68,35 @@ const App = () => {
 
   return (
     <div className="container">
-      {/* <ErrorBoundary> */}
-      <Header />
-      {isLoading ? (
-        // <PokeLoader />
-        <p>load........</p>
-      ) : isError ? (
-        <div className="broken">
-          <img
-            className="broken-pokeball"
-            src="/assets/img/broken-pokeball.png"
-            alt=""
-          />
-          <span>Error: {(error as Error).message}</span>
-        </div>
-      ) : (
-        <>
-          {/* <AppRoutes /> */}
-          <Main />
-          {!isLoading && currentData.length > 0 && (
-            <PaginationControls
-              page={page}
-              totalPages={totalPages}
-              nextPage={nextPage}
-              prevPage={prevPage}
+      <ErrorBoundary>
+        <Header />
+        {isLoading ? (
+          // <PokeLoader />
+          <p>load........</p>
+        ) : isError ? (
+          <div className="broken">
+            <img
+              className="broken-pokeball"
+              src="/assets/img/broken-pokeball.png"
+              alt=""
             />
-          )}
-        </>
-      )}
-      {/* </ErrorBoundary> */}
+            <span>Error: {(error as Error).message}</span>
+          </div>
+        ) : (
+          <>
+            {/* <AppRoutes /> */}
+            <Main />
+            {!isLoading && currentData.length > 0 && (
+              <PaginationControls
+                page={page}
+                totalPages={totalPages}
+                nextPage={nextPage}
+                prevPage={prevPage}
+              />
+            )}
+          </>
+        )}
+      </ErrorBoundary>
     </div>
   );
 };
