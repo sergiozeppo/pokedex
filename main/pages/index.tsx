@@ -14,8 +14,10 @@ import { usePagination } from '../src/utils/usePagination/usePagination';
 import { RootState } from '../src/store';
 import Main from '../src/views/Main/Main';
 import RootLayout from './RootLayout';
+import { useRouter } from 'next/router';
 
 const App = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
   const {
@@ -30,9 +32,10 @@ const App = () => {
     }
   }, [allPokemons, dispatch]);
 
-  // const [searchParams, setSearchParams] = useSearchParams();
-  const initialPage = INITIAL_PAGE;
-  // parseInt(searchParams.get('page') || INITIAL_PAGE.toString());
+  const initialPage =
+    typeof window !== 'undefined'
+      ? parseInt(localStorage.getItem('pokemonPage'))
+      : INITIAL_PAGE;
 
   const searchQuery = useSelector(
     (state: RootState) => state.searchQuerySlice.value
@@ -60,9 +63,9 @@ const App = () => {
     }
   }, [currentData, dispatch]);
 
-  // useEffect(() => {
-  //   setSearchParams({ page: page.toString(), q: searchQuery });
-  // }, [page, searchQuery, setSearchParams]);
+  useEffect(() => {
+    router.push(`/?page=${page || initialPage}&q=${searchQuery || ''}`);
+  }, [page, searchQuery]);
 
   return (
     <RootLayout>

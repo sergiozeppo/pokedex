@@ -8,9 +8,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <div className="container">
         <ErrorBoundary>
           <Header />
-          <p>HAGAGAGAGAGAG</p>
           {children}
-          {/* {name && <CardDetails />} */}
         </ErrorBoundary>
       </div>
     </>

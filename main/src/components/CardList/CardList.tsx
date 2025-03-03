@@ -1,15 +1,14 @@
-import Card from '../Card/Card';
-import PokeLoader from '../PokeLoader/PokeLoader';
 // import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import styles from './CardList.module.css';
-// import PokemonLayout from '../../../pages/pokemon/PokemonLayout';
 import { useRouter } from 'next/router';
+// import PokemonLayout from '../../../pages/pokemon/PokemonLayout';
+import Card from '../Card/Card';
+import PokeLoader from '../PokeLoader/PokeLoader';
+import styles from './CardList.module.css';
 
 function CardList() {
   const router = useRouter();
-  const pokename = router.query.name as string;
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
   // const navigate = useNavigate();
   const currentPokemons = useSelector(
@@ -18,10 +17,7 @@ function CardList() {
 
   return (
     <>
-      <div
-        className={styles['card-list']}
-        // onClick={() => navigate('/')}
-      >
+      <div className={styles['card-list']} onClick={() => router.push('/')}>
         {isLoading && <PokeLoader />}
         {Array.isArray(currentPokemons) &&
         currentPokemons.length > 0 &&
@@ -33,7 +29,6 @@ function CardList() {
           <p>No Pokémon available.</p>
         )}
       </div>
-      {pokename && <p>{pokename}</p>}
     </>
   );
 }

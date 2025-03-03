@@ -32,5 +32,9 @@ export function usePagination(
     setPage((prev) => Math.max(prev - 1, INITIAL_PAGE));
   }, []);
 
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('pokemonPage', String(page));
+  }
+
   return { currentData, page, totalPages, setPage, nextPage, prevPage };
 }
