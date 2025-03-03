@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import AppRoutes from '../src/components/AppRoutes/AppRoutes';
 import PaginationControls from '../src/components/PaginationControls/PaginationControls';
-// import PokeLoader from '../src/components/PokeLoader/PokeLoader';
+import PokeLoader from '../src/components/PokeLoader/PokeLoader';
 import { INITIAL_PAGE, POKEMONS_ON_PAGE } from '../src/constants/constants';
 import {
   useGetPokemonsQuery,
@@ -71,8 +70,7 @@ const App = () => {
       <ErrorBoundary>
         <Header />
         {isLoading ? (
-          // <PokeLoader />
-          <p>load........</p>
+          <PokeLoader />
         ) : isError ? (
           <div className="broken">
             <img
