@@ -15,22 +15,24 @@ import { RootState } from '../src/store';
 import Main from '../src/views/Main/Main';
 import RootLayout from './RootLayout';
 import { useRouter } from 'next/router';
+import { fetchData } from '../src/services/server';
+import { GetServerSideProps, InferGetStaticPropsType } from 'next';
 
-const App = () => {
+export const getServerSideProps = (async () => {
+  const data = await fetchData();
+  return { props: { data } };
+}) satisfies GetServerSideProps<{ data: Pokemon[] }>;
+
+const App = ({ data }: InferGetStaticPropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
-  const {
-    data: allPokemons = [],
-    isError,
-    error,
-  } = useGetPokemonsQuery(undefined);
 
   useEffect(() => {
-    if (allPokemons) {
-      dispatch(setAllPokemons(allPokemons));
+    if (data) {
+      dispatch(setAllPokemons(data));
     }
-  }, [allPokemons, dispatch]);
+  }, [data, dispatch]);
 
   const initialPage =
     typeof window !== 'undefined'
@@ -52,7 +54,7 @@ const App = () => {
     trimmedQuery !== '' ? searchResult.data : getAllResult.data;
 
   const { currentData, page, totalPages, nextPage, prevPage } = usePagination(
-    currentInitData || (allPokemons as Pokemon[]),
+    currentInitData || (data as Pokemon[]),
     initialPage,
     POKEMONS_ON_PAGE
   );
@@ -65,26 +67,16 @@ const App = () => {
 
   useEffect(() => {
     router.push(`/?page=${page || initialPage}&q=${searchQuery || ''}`);
-  }, [page, searchQuery]);
+  }, [page, searchQuery, initialPage]);
 
   return (
     <RootLayout>
       {isLoading ? (
         <PokeLoader />
-      ) : isError ? (
-        <div className="broken">
-          <img
-            className="broken-pokeball"
-            src="/assets/img/broken-pokeball.png"
-            alt=""
-          />
-          <span>Error: {(error as Error).message}</span>
-        </div>
       ) : (
         <>
-          {/* <AppRoutes /> */}
           <Main />
-          {!isLoading && currentData.length > 0 && (
+          {!isLoading && currentData?.length > 0 && (
             <PaginationControls
               page={page}
               totalPages={totalPages}

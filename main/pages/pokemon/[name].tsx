@@ -1,22 +1,38 @@
 import styles from '../../src/views/CardDetails/CardDetails.module.css';
-import { PokemonColorPair } from '../../src/types/types';
+import { PokemonColorPair, PokemonData } from '../../src/types/types';
 import PokeLoader from '../../src/components/PokeLoader/PokeLoader';
 import { usePokemonBackground } from '../../src/utils/usePokemonBackground/usePokemonBackground';
-import { useGetPokemonOutletDetailsQuery } from '../../src/services/api';
 import { useRouter } from 'next/router';
 import RootLayout from '../RootLayout';
 import PokemonLayout from './PokemonLayout';
+import { fetchPokemonOutletDetails } from '../../src/services/server';
+import { GetServerSideProps, InferGetStaticPropsType } from 'next';
+import { useEffect, useState } from 'react';
 
-const CardDetails = () => {
+export const getServerSideProps = (async (context) => {
+  const { name } = context.params as { name: string };
+  const data = await fetchPokemonOutletDetails(name);
+  return { props: { pokemonData: data } };
+}) satisfies GetServerSideProps<{
+  pokemonData: PokemonData;
+}>;
+
+const CardDetails = ({
+  pokemonData,
+}: InferGetStaticPropsType<typeof getServerSideProps>) => {
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const name = router.query.name as string;
 
-  const {
-    data: pokemonData,
-    isLoading,
-    isError,
-    error,
-  } = useGetPokemonOutletDetailsQuery(name || '');
+  useEffect(() => {
+    router.replace(router.asPath, undefined, { scroll: false });
+  }, [router.query.name]);
+
+  useEffect(() => {
+    if (pokemonData) {
+      setIsLoading(false);
+    }
+  }, [pokemonData]);
 
   const handleClick = () => router.push('/');
 
@@ -43,10 +59,6 @@ const CardDetails = () => {
         >
           {isLoading ? (
             <PokeLoader data-testid="poke-loader" />
-          ) : isError ? (
-            <div className={styles['error']}>
-              {(error as Error)?.message || 'Failed to load Pokémon details'}
-            </div>
           ) : pokemonData ? (
             <>
               <div className={styles['details-container']}>
