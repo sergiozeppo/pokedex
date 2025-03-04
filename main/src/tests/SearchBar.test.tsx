@@ -2,7 +2,6 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, test, beforeEach } from 'vitest';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
 import { setupStore } from '../store';
 import SearchBar from '../components/SearchBar/SearchBar';
 
@@ -16,9 +15,7 @@ describe('SearchBar Component', () => {
   test('renders search input, search button, theme switcher and error button', () => {
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <SearchBar />
-        </MemoryRouter>
+        <SearchBar />
       </Provider>
     );
 
@@ -38,9 +35,7 @@ describe('SearchBar Component', () => {
   test('updates input value on change', () => {
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <SearchBar />
-        </MemoryRouter>
+        <SearchBar />
       </Provider>
     );
     const input = screen.getByPlaceholderText('Search') as HTMLInputElement;
@@ -51,9 +46,7 @@ describe('SearchBar Component', () => {
   test('dispatches search query on Enter key press', () => {
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <SearchBar />
-        </MemoryRouter>
+        <SearchBar />
       </Provider>
     );
     const input = screen.getByPlaceholderText('Search') as HTMLInputElement;
@@ -67,9 +60,7 @@ describe('SearchBar Component', () => {
   test('dispatches search query on clicking search button', () => {
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <SearchBar />
-        </MemoryRouter>
+        <SearchBar />
       </Provider>
     );
     const input = screen.getByPlaceholderText('Search') as HTMLInputElement;
@@ -85,9 +76,7 @@ describe('SearchBar Component', () => {
     expect(() => {
       render(
         <Provider store={store}>
-          <MemoryRouter>
-            <SearchBar />
-          </MemoryRouter>
+          <SearchBar />
         </Provider>
       );
       const errorButton = screen.getByRole('button', { name: /ERROR!/i });
@@ -98,18 +87,19 @@ describe('SearchBar Component', () => {
   test('updates input value correctly when typing and triggers search on Enter and button click', async () => {
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <SearchBar />
-        </MemoryRouter>
+        <SearchBar />
       </Provider>
     );
     const input = screen.getByPlaceholderText('Search');
     const user = userEvent.setup();
+
     await user.type(input, 'pikachu');
     expect(input).toHaveValue('pikachu');
+
     await user.type(input, '{enter}');
     expect(input).toHaveValue('pikachu');
-    const button = screen.getByRole('button', { name: /search/i });
+
+    const button = screen.getByRole('button', { name: /Search/i });
     await user.click(button);
     expect(input).toHaveValue('pikachu');
   });
