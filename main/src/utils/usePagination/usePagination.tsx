@@ -10,18 +10,18 @@ export function usePagination(
   const [page, setPage] = useState(initialPage);
 
   const totalPages = useMemo(() => {
-    return data.length > 0 ? Math.ceil(data.length / limit) : 0;
+    return data?.length > 0 ? Math.ceil(data?.length / limit) : 0;
   }, [data, limit]);
 
   useEffect(() => {
-    if (data.length > 0 && page > totalPages) {
+    if (data?.length > 0 && page > totalPages) {
       setPage(INITIAL_PAGE);
     }
   }, [data, page, totalPages]);
 
   const currentData = useMemo(() => {
     const startIndex = (page - 1) * limit;
-    return data.slice(startIndex, startIndex + limit);
+    return data?.slice(startIndex, startIndex + limit);
   }, [data, page, limit]);
 
   const nextPage = useCallback(() => {
