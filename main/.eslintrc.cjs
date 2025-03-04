@@ -6,6 +6,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
     'prettier',
     'plugin:prettier/recommended',
     'plugin:@next/next/recommended',
@@ -19,6 +21,11 @@ module.exports = {
     '@typescript-eslint',
     '@next/eslint-plugin-next',
   ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
     ...require('eslint-plugin-react-hooks').configs.recommended.rules,
     ...require('eslint-plugin-react').configs.recommended.rules,
