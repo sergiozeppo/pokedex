@@ -1,39 +1,35 @@
 import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import NotFound from '../../pages/404';
-import { describe, it, expect } from 'vitest';
-import { MemoryRouter, Routes, Route } from 'react-router';
+
+const mockedUseRouter = vi.fn();
+vi.mock('next/router', () => ({
+  useRouter: () => mockedUseRouter(),
+}));
 
 describe('NotFound Component', () => {
-  it('renders NotFound content with image, heading and Return button', () => {
-    render(
-      <MemoryRouter initialEntries={['/404']}>
-        <Routes>
-          <Route path="/404" element={<NotFound />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  it('renders NotFound content with image, heading and Return link', () => {
+    mockedUseRouter.mockReturnValue({
+      push: vi.fn(),
+      prefetch: vi.fn().mockResolvedValue(null),
+    });
 
-    const heading = screen.getByText(/Not Found\./i);
+    render(<NotFound />);
+
+    const heading = screen.getByRole('heading', { name: /Not Found\./i });
     expect(heading).toBeInTheDocument();
 
-    const returnButton = screen.getByRole('button', { name: /Return/i });
-    expect(returnButton).toBeInTheDocument();
+    const returnLink = screen.getByRole('link', { name: /Return/i });
+    expect(returnLink).toBeInTheDocument();
 
-    const image = screen.getByAltText('');
+    const image = screen.getByAltText('not-found');
     expect(image).toBeInTheDocument();
   });
 
-  it('navigates to /404 when rendered on an unknown route', () => {
-    render(
-      <MemoryRouter initialEntries={['/some/unknown/path']}>
-        <Routes>
-          <Route path="/404" element={<NotFound />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  it('navigates to "/" when Return link is clicked', () => {
+    render(<NotFound />);
 
-    const heading = screen.getByText(/Not Found\./i);
-    expect(heading).toBeInTheDocument();
+    const returnLink = screen.getByRole('link', { name: /Return/i });
+    expect(returnLink).toHaveAttribute('href', '/');
   });
 });

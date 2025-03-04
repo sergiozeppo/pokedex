@@ -7,12 +7,9 @@ describe('CardLoader Component', () => {
     render(<CardLoader />);
 
     expect(screen.getByText('#000')).toBeInTheDocument();
-    expect(screen.getByAltText('loader')).toHaveAttribute(
-      'src',
-      '/assets/img/poke-loader.png'
-    );
+    expect(screen.getByAltText('loader')).toHaveAttribute('src', '{imageUrl}');
     expect(screen.getByText('Pokémon Name')).toBeInTheDocument();
     expect(screen.getByText('Abilities: Some abilities')).toBeInTheDocument();
-    expect(screen.getByRole('img')).toHaveClass('card-img');
+    expect(screen.getByRole('img')).toHaveClass('_card-img_1f2933');
   });
 });

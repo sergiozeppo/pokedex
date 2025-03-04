@@ -8,6 +8,6 @@ describe('Logo Component', () => {
 
     const logoImage = screen.getByRole('img', { name: /pokedex logo/i });
     expect(logoImage).toBeInTheDocument();
-    expect(logoImage).toHaveClass('logo');
+    expect(logoImage).toHaveClass('_logo_16f863');
   });
 });
