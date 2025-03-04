@@ -7,7 +7,7 @@ export default function NotFound() {
       <img
         className="broken-pokeball"
         src="/assets/img/broken-pokeball.png"
-        alt=""
+        alt="not-found"
       />
 
       <h2>Not Found.</h2>

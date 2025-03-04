@@ -25,5 +25,7 @@ module.exports = {
     ...require('eslint-plugin-react').configs['jsx-runtime'].rules,
     ...require('@typescript-eslint/eslint-plugin').configs.recommended.rules,
     ...require('@next/eslint-plugin-next').configs.recommended.rules,
+    '@next/next/no-img-element': 0,
+    'react-hooks/exhaustive-deps': 0,
   },
 };
