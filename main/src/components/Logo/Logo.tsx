@@ -1,4 +1,3 @@
-// import logo from '/assets/img/logo.svg';
 import styles from './Logo.module.css';
 
 function Logo() {

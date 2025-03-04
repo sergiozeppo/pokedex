@@ -5,7 +5,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const getTheme = (): Theme => {
     const theme =
       typeof window !== 'undefined'
-        ? (localStorage.getItem('poke_theme') as Theme)
+        ? (localStorage.getItem('poke_theme') as Theme) || 'light'
         : 'light';
 
     return theme;
