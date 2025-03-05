@@ -66,6 +66,7 @@ const CardDetails = ({
                   <div className={styles['details-title']}>
                     <div
                       className={styles['details-close']}
+                      data-testid="close"
                       onClick={handleClick}
                     ></div>
                     <span className={styles['details-h2']}>

@@ -42,7 +42,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             <img
               className="broken-pokeball"
               src="/assets/img/broken-pokeball.png"
-              alt=""
+              alt="not-found"
             />
 
             <h2>Something went wrong.</h2>
