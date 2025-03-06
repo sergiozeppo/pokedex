@@ -7,11 +7,9 @@ export const metadata = {
   description: 'List of all Pokémon',
 };
 
-export default async function AppPage(
-  props: {
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  }
-) {
+export default async function AppPage(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const searchParams = await props.searchParams;
   const data: Pokemon[] = await fetchData();
   const page = Number(searchParams.page) || 1;

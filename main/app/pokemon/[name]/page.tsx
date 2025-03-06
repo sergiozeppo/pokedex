@@ -4,11 +4,9 @@ import { fetchPokemonOutletDetails } from '../../../src/services/server';
 import PokemonLayout from './PokemonLayout';
 import ClientCardDetails from './ClientCardDetails';
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{ name: string }>;
-  }
-) {
+export async function generateMetadata(props: {
+  params: Promise<{ name: string }>;
+}) {
   const params = await props.params;
   try {
     const data = await fetchPokemonOutletDetails(params.name);
@@ -24,11 +22,9 @@ export async function generateMetadata(
   }
 }
 
-export default async function PokemonDetailsPage(
-  props: {
-    params: Promise<{ name: string }>;
-  }
-) {
+export default async function PokemonDetailsPage(props: {
+  params: Promise<{ name: string }>;
+}) {
   const params = await props.params;
   try {
     const { name } = params;
