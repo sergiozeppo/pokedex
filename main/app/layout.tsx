@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { Providers } from './providers';
 import Header from '../src/views/Header/Header';
 import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary';
+import { ThemeProvider } from '../src/context/ThemeProvider';
 
 export const metadata: Metadata = {
   title: 'pokedex by @sergiozeppo',
@@ -22,12 +23,14 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="container">
-            <ErrorBoundary>
-              <Header />
-              {children}
-            </ErrorBoundary>
-          </div>
+          <ThemeProvider>
+            <div className="container">
+              <ErrorBoundary>
+                <Header />
+                {children}
+              </ErrorBoundary>
+            </div>
+          </ThemeProvider>
         </Providers>
       </body>
     </html>
