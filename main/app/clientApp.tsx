@@ -20,9 +20,14 @@ import { Pokemon } from '../src/types/types';
 interface ClientAppProps {
   serverData: Pokemon[];
   initialPage: number;
+  initialQuery: string;
 }
 
-const ClientApp = ({ serverData, initialPage }: ClientAppProps) => {
+const ClientApp = ({
+  serverData,
+  initialPage,
+  initialQuery,
+}: ClientAppProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
@@ -34,7 +39,8 @@ const ClientApp = ({ serverData, initialPage }: ClientAppProps) => {
   const searchQueryFromStore = useSelector(
     (state: RootState) => state.searchQuerySlice.value
   );
-  const searchQuery = searchParams?.get('q') || searchQueryFromStore || '';
+  const searchQuery =
+    searchParams?.get('q') || initialQuery || searchQueryFromStore || '';
 
   useEffect(() => {
     if (serverData) {

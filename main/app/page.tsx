@@ -13,6 +13,9 @@ export default async function AppPage(props: {
   const searchParams = await props.searchParams;
   const data: Pokemon[] = await fetchData();
   const page = Number(searchParams.page) || 1;
+  const query = (searchParams.q as string) || '';
 
-  return <ClientApp serverData={data} initialPage={page} />;
+  return (
+    <ClientApp serverData={data} initialPage={page} initialQuery={query} />
+  );
 }
