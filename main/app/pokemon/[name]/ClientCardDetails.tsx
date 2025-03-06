@@ -15,7 +15,26 @@ const ClientCardDetails = ({ pokemonData }: ClientCardDetailsProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const handleClick = () => router.push('/');
+  // useEffect(() => {
+  //     if (paginatedData) {
+  //       dispatch(setCurrentPokemons(paginatedData));
+  //       router.replace(`/?page=${page}&q=${searchQuery}`, { scroll: false });
+  //     }
+  //   }, [paginatedData, page, searchQuery]);
+
+  const handleClick = () => {
+    const currentPage =
+      typeof window !== 'undefined'
+        ? Number(localStorage.getItem('pokemonPage'))
+        : 1;
+    const currentSearchQuery =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('searchPokemon')
+        : '';
+    router.replace(`/?page=${currentPage}&q=${currentSearchQuery}`, {
+      scroll: false,
+    });
+  };
 
   const colorsArray = usePokemonBackground(
     pokemonData?.types || []
