@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from '../src/components/ErrorBoundary/ErrorBoundary.module.css';
+import styles from '../../src/components/ErrorBoundary/ErrorBoundary.module.css';
 
 export default function NotFound() {
   return (

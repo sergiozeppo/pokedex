@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import Button from '../Button/Button';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
