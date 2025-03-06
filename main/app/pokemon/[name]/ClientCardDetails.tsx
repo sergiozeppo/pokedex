@@ -24,7 +24,7 @@ const ClientCardDetails = ({ pokemonData }: ClientCardDetailsProps) => {
       typeof window !== 'undefined'
         ? localStorage.getItem('searchPokemon')
         : '';
-    router.replace(`/?page=${currentPage}&q=${currentSearchQuery}`, {
+    router.replace(`/?page=${currentPage}&q=${currentSearchQuery || ''}`, {
       scroll: false,
     });
   };

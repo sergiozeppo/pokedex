@@ -14,9 +14,23 @@ function CardList() {
     (state: RootState) => state.currentPokemonsSlice.pokemons
   );
 
+  const handleClick = () => {
+    const currentPage =
+      typeof window !== 'undefined'
+        ? Number(localStorage.getItem('pokemonPage'))
+        : 1;
+    const currentSearchQuery =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('searchPokemon')
+        : '';
+    router.replace(`/?page=${currentPage}&q=${currentSearchQuery || ''}`, {
+      scroll: false,
+    });
+  };
+
   return (
     <>
-      <div className={styles['card-list']} onClick={() => router.push('/')}>
+      <div className={styles['card-list']} onClick={handleClick}>
         {isLoading && <PokeLoader />}
         {Array.isArray(currentPokemons) &&
         currentPokemons.length > 0 &&
