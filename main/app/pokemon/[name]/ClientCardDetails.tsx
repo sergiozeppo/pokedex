@@ -15,13 +15,6 @@ const ClientCardDetails = ({ pokemonData }: ClientCardDetailsProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  // useEffect(() => {
-  //     if (paginatedData) {
-  //       dispatch(setCurrentPokemons(paginatedData));
-  //       router.replace(`/?page=${page}&q=${searchQuery}`, { scroll: false });
-  //     }
-  //   }, [paginatedData, page, searchQuery]);
-
   const handleClick = () => {
     const currentPage =
       typeof window !== 'undefined'
