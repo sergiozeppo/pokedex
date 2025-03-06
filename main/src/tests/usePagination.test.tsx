@@ -12,15 +12,15 @@ const mockData = Array(25)
 describe('usePagination Hook', () => {
   test('calculates correct total pages', () => {
     const { result } = renderHook(() => usePagination(mockData));
-    expect(result.current.totalPages).toBe(3);
+    expect(result.current.totalPages).toBe(4);
   });
 
   test('returns correct current data', () => {
     const { result } = renderHook(() => usePagination(mockData));
-    expect(result.current.currentData.length).toBe(10);
+    expect(result.current.currentData.length).toBe(8);
 
     act(() => result.current.setPage(2));
-    expect(result.current.currentData.length).toBe(10);
+    expect(result.current.currentData.length).toBe(8);
   });
 
   test('handles page navigation', () => {

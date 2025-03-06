@@ -5,7 +5,6 @@ export const fetchData = async (): Promise<Pokemon[]> => {
   return await fetch(`${URL}?offset=0&limit=${POKEMONS_LIMIT}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data.results);
       return data.results as Pokemon[];
     })
     .catch((error) => {
@@ -20,7 +19,6 @@ export const fetchPokemonDetails = async (name: string) => {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       return data as PokemonDetails;
     })
     .catch((error) => {

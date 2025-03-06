@@ -1,6 +1,8 @@
+'use client';
+
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Card from '../Card/Card';
 import PokeLoader from '../PokeLoader/PokeLoader';
 import styles from './CardList.module.css';
@@ -12,9 +14,23 @@ function CardList() {
     (state: RootState) => state.currentPokemonsSlice.pokemons
   );
 
+  const handleClick = () => {
+    const currentPage =
+      typeof window !== 'undefined'
+        ? Number(localStorage.getItem('pokemonPage'))
+        : 1;
+    const currentSearchQuery =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('searchPokemon')
+        : '';
+    router.replace(`/?page=${currentPage}&q=${currentSearchQuery || ''}`, {
+      scroll: false,
+    });
+  };
+
   return (
     <>
-      <div className={styles['card-list']} onClick={() => router.push('/')}>
+      <div className={styles['card-list']} onClick={handleClick}>
         {isLoading && <PokeLoader />}
         {Array.isArray(currentPokemons) &&
         currentPokemons.length > 0 &&

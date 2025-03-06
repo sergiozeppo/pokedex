@@ -1,7 +1,9 @@
+'use client';
+
 import { ReactNode } from 'react';
-import Modal from '../../src/components/Modal/Modal';
-import CardList from '../../src/components/CardList/CardList';
-import styles from '../../src/views/Main/Main.module.css';
+import Modal from '../../../src/components/Modal/Modal';
+import CardList from '../../../src/components/CardList/CardList';
+import styles from '../../../src/views/Main/Main.module.css';
 
 export default function PokemonLayout({ children }: { children: ReactNode }) {
   return (

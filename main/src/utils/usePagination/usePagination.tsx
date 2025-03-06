@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Pokemon } from '../../types/types';
 import { INITIAL_PAGE, POKEMONS_ON_PAGE } from '../../constants/constants';

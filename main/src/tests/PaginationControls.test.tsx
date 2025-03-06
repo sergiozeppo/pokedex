@@ -11,6 +11,7 @@ describe('PaginationControls', () => {
     totalPages: 5,
     nextPage: vi.fn(),
     prevPage: vi.fn(),
+    onPageChange: vi.fn(),
   };
 
   test('renders current page and total pages correctly', () => {
