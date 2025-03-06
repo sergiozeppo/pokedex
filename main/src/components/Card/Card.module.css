@@ -1,6 +1,5 @@
 .card {
   display: flex;
-  width: 250px;
   height: 100%;
   flex-direction: column;
   align-items: center;
@@ -39,18 +38,6 @@
   flex-direction: column;
   border-radius: 10px;
   background: var(--grayscale-bg);
-}
-
-h3 {
-  color: var(--text-dark);
-  text-transform: capitalize;
-  text-align: center;
-  flex: 1 0 0;
-  margin: 0;
-}
-p {
-  text-align: center;
-  margin: 0;
 }
 
 .checkbox-cont {

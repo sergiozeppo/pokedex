@@ -11,7 +11,7 @@
   margin: 20px;
   width: 90vw;
   height: 90vh;
-  color: var(--text-light);
+  color: var(--text-dark);
 }
 
 .reset-button {

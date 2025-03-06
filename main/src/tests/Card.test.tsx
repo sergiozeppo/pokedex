@@ -1,5 +1,4 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import Card from '../components/Card/Card';
 import { Provider } from 'react-redux';
@@ -36,7 +35,10 @@ const mockPokemonDetails = {
 const store = setupStore();
 
 describe('Card Component', () => {
-  const mockUseGetPokemonDetailsQuery = vi.mocked(useGetPokemonDetailsQuery);
+  const mockUseGetPokemonDetailsQuery = vi.mocked(
+    useGetPokemonDetailsQuery,
+    true
+  );
 
   beforeEach(() => {
     mockUseGetPokemonDetailsQuery.mockReset();
@@ -52,9 +54,7 @@ describe('Card Component', () => {
 
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <Card name="pikachu" />
-        </MemoryRouter>
+        <Card name="pikachu" />
       </Provider>
     );
 
@@ -80,9 +80,7 @@ describe('Card Component', () => {
 
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <Card name="pikachu" />
-        </MemoryRouter>
+        <Card name="pikachu" />
       </Provider>
     );
 

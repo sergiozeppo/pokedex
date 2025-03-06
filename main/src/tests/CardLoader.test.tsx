@@ -13,6 +13,6 @@ describe('CardLoader Component', () => {
     );
     expect(screen.getByText('Pokémon Name')).toBeInTheDocument();
     expect(screen.getByText('Abilities: Some abilities')).toBeInTheDocument();
-    expect(screen.getByRole('img')).toHaveClass('card-img');
+    expect(screen.getByRole('img')).toHaveClass('_card-img_1f2933');
   });
 });

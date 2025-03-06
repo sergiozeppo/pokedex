@@ -110,3 +110,55 @@ a {
   width: 400px;
   height: 400px;
 }
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  max-width: 80px;
+  flex: 1 0 0;
+  border-radius: 16px;
+  background: var(--text-light);
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.25) inset;
+  border: none;
+  cursor: pointer;
+  color: var(--primary-bg);
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+button:hover {
+  text-decoration: underline;
+}
+
+h3 {
+  color: var(--text-dark);
+  text-transform: capitalize;
+  text-align: center;
+  flex: 1 0 0;
+  margin: 0;
+}
+p {
+  text-align: center;
+  margin: 0;
+}
+
+header {
+  display: flex;
+  padding: 12px 12px 24px 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+span {
+  color: var(--text-light);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
