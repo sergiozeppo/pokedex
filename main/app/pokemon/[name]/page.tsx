@@ -4,11 +4,12 @@ import { fetchPokemonOutletDetails } from '../../../src/services/server';
 import PokemonLayout from './PokemonLayout';
 import ClientCardDetails from './ClientCardDetails';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { name: string };
-}) {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ name: string }>;
+  }
+) {
+  const params = await props.params;
   try {
     const data = await fetchPokemonOutletDetails(params.name);
     return {
@@ -23,11 +24,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function PokemonDetailsPage({
-  params,
-}: {
-  params: { name: string };
-}) {
+export default async function PokemonDetailsPage(
+  props: {
+    params: Promise<{ name: string }>;
+  }
+) {
+  const params = await props.params;
   try {
     const { name } = params;
     const data = await fetchPokemonOutletDetails(name);
