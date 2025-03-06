@@ -1,9 +1,19 @@
 import userEvent from '@testing-library/user-event';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, expect, test, beforeEach } from 'vitest';
+import { describe, expect, test, beforeEach, vi } from 'vitest';
 import { Provider } from 'react-redux';
 import { setupStore } from '../store';
 import SearchBar from '../components/SearchBar/SearchBar';
+import { AppRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
+const mockAppRouterContext = {
+  push: vi.fn(),
+  replace: vi.fn(),
+  prefetch: vi.fn(),
+  refresh: vi.fn(),
+  forward: vi.fn(),
+  back: vi.fn(),
+};
 
 describe('SearchBar Component', () => {
   let store = setupStore();
@@ -14,9 +24,11 @@ describe('SearchBar Component', () => {
 
   test('renders search input, search button, theme switcher and error button', () => {
     render(
-      <Provider store={store}>
-        <SearchBar />
-      </Provider>
+      <AppRouterContext.Provider value={mockAppRouterContext}>
+        <Provider store={store}>
+          <SearchBar />
+        </Provider>
+      </AppRouterContext.Provider>
     );
 
     const input = screen.getByPlaceholderText('Search');
@@ -34,9 +46,11 @@ describe('SearchBar Component', () => {
 
   test('updates input value on change', () => {
     render(
-      <Provider store={store}>
-        <SearchBar />
-      </Provider>
+      <AppRouterContext.Provider value={mockAppRouterContext}>
+        <Provider store={store}>
+          <SearchBar />
+        </Provider>
+      </AppRouterContext.Provider>
     );
     const input = screen.getByPlaceholderText('Search') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'pikachu' } });
@@ -45,9 +59,11 @@ describe('SearchBar Component', () => {
 
   test('dispatches search query on Enter key press', () => {
     render(
-      <Provider store={store}>
-        <SearchBar />
-      </Provider>
+      <AppRouterContext.Provider value={mockAppRouterContext}>
+        <Provider store={store}>
+          <SearchBar />
+        </Provider>
+      </AppRouterContext.Provider>
     );
     const input = screen.getByPlaceholderText('Search') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'pikachu' } });
@@ -59,9 +75,11 @@ describe('SearchBar Component', () => {
 
   test('dispatches search query on clicking search button', () => {
     render(
-      <Provider store={store}>
-        <SearchBar />
-      </Provider>
+      <AppRouterContext.Provider value={mockAppRouterContext}>
+        <Provider store={store}>
+          <SearchBar />
+        </Provider>
+      </AppRouterContext.Provider>
     );
     const input = screen.getByPlaceholderText('Search') as HTMLInputElement;
     const searchButton = screen.getByRole('button', { name: /Search/i });
@@ -75,9 +93,11 @@ describe('SearchBar Component', () => {
   test('throws error when clicking error button', () => {
     expect(() => {
       render(
-        <Provider store={store}>
-          <SearchBar />
-        </Provider>
+        <AppRouterContext.Provider value={mockAppRouterContext}>
+          <Provider store={store}>
+            <SearchBar />
+          </Provider>
+        </AppRouterContext.Provider>
       );
       const errorButton = screen.getByRole('button', { name: /ERROR!/i });
       fireEvent.click(errorButton);
@@ -86,9 +106,11 @@ describe('SearchBar Component', () => {
 
   test('updates input value correctly when typing and triggers search on Enter and button click', async () => {
     render(
-      <Provider store={store}>
-        <SearchBar />
-      </Provider>
+      <AppRouterContext.Provider value={mockAppRouterContext}>
+        <Provider store={store}>
+          <SearchBar />
+        </Provider>
+      </AppRouterContext.Provider>
     );
     const input = screen.getByPlaceholderText('Search');
     const user = userEvent.setup();

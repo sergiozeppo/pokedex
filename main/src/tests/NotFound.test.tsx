@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import NotFound from '../../app/404/page';
 
 const mockedUseRouter = vi.fn();
-vi.mock('next/router', () => ({
+vi.mock('next/navigation', () => ({
   useRouter: () => mockedUseRouter(),
 }));
 
