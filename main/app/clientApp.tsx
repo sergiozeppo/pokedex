@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import PaginationControls from '../src/components/PaginationControls/PaginationControls';
 import PokeLoader from '../src/components/PokeLoader/PokeLoader';
 import { INITIAL_PAGE, POKEMONS_ON_PAGE } from '../src/constants/constants';
@@ -19,12 +19,22 @@ import { Pokemon } from '../src/types/types';
 
 interface ClientAppProps {
   serverData: Pokemon[];
+  initialPage: number;
 }
 
-const ClientApp = ({ serverData }: ClientAppProps) => {
+const ClientApp = ({ serverData, initialPage }: ClientAppProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
+
+  const currentPage =
+    Number(searchParams?.get('page')) || initialPage || INITIAL_PAGE;
+
+  const searchQueryFromStore = useSelector(
+    (state: RootState) => state.searchQuerySlice.value
+  );
+  const searchQuery = searchParams?.get('q') || searchQueryFromStore || '';
 
   useEffect(() => {
     if (serverData) {
@@ -32,9 +42,6 @@ const ClientApp = ({ serverData }: ClientAppProps) => {
     }
   }, [serverData, dispatch]);
 
-  const searchQuery = useSelector(
-    (state: RootState) => state.searchQuerySlice.value
-  );
   const trimmedQuery = searchQuery.trim();
 
   const { data: allPokemons } = useGetPokemonsQuery(undefined, {
@@ -53,13 +60,7 @@ const ClientApp = ({ serverData }: ClientAppProps) => {
     totalPages,
     nextPage,
     prevPage,
-  } = usePagination(
-    currentData || [],
-    typeof window !== 'undefined'
-      ? parseInt(localStorage.getItem('pokemonPage') || INITIAL_PAGE.toString())
-      : INITIAL_PAGE,
-    POKEMONS_ON_PAGE
-  );
+  } = usePagination(currentData || [], currentPage, POKEMONS_ON_PAGE);
 
   useEffect(() => {
     if (paginatedData) {
@@ -67,6 +68,21 @@ const ClientApp = ({ serverData }: ClientAppProps) => {
       router.replace(`/?page=${page}&q=${searchQuery}`, { scroll: false });
     }
   }, [paginatedData, page, searchQuery]);
+
+  const handlePageChange = (newPage: number) => {
+    const currentParams = searchParams
+      ? new URLSearchParams(searchParams.toString())
+      : new URLSearchParams();
+
+    currentParams.set('page', newPage.toString());
+
+    if (newPage === 1) {
+      currentParams.delete('page');
+    }
+
+    const queryString = currentParams.toString();
+    router.replace(queryString ? `?${queryString}` : '', { scroll: false });
+  };
 
   return (
     <>
@@ -81,6 +97,7 @@ const ClientApp = ({ serverData }: ClientAppProps) => {
               totalPages={totalPages}
               nextPage={nextPage}
               prevPage={prevPage}
+              onPageChange={handlePageChange}
             />
           )}
         </>
