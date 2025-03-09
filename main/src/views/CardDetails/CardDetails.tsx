@@ -1,18 +1,27 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './CardDetails.css';
-import { PokemonColorPair } from '../../types/types';
-import PokeLoader from '../../components/PokeLoader/PokeLoader';
+import { PokemonColorPair, PokemonData } from '../../types/types';
 import { usePokemonBackground } from '../../utils/usePokemonBackground/usePokemonBackground';
-import { useGetPokemonOutletDetailsQuery } from '../../services/api';
+import { Route } from './+types/CardDetails';
+import { fetchPokemonOutletDetails } from '../../services/server';
 
-const CardDetails = () => {
-  const { name } = useParams<{ name: string }>();
-  const {
-    data: pokemonData,
-    isLoading,
-    isError,
-    error,
-  } = useGetPokemonOutletDetailsQuery(name || '');
+export async function loader({ params }: Route.ClientLoaderArgs) {
+  {
+    const searchParams = params.name;
+
+    const data: PokemonData = await fetchPokemonOutletDetails(searchParams);
+    return {
+      data,
+    };
+  }
+}
+
+export function HydrateFallback() {
+  return <div>Loading...</div>;
+}
+
+const CardDetails = ({ loaderData }: Route.ComponentProps) => {
+  const pokemonData = loaderData.data;
   const navigate = useNavigate();
 
   const handleClick = () => navigate('/');
@@ -20,7 +29,8 @@ const CardDetails = () => {
     pokemonData?.types || []
   ) as PokemonColorPair[];
 
-  if (!name) return <div className="card-details">No Pokémon selected</div>;
+  if (!pokemonData.name)
+    return <div className="card-details">No Pokémon selected</div>;
 
   const id = `#${pokemonData?.id.toString().padStart(3, '0')}`;
   const img = pokemonData?.imageUrl || '../assets/img/poke-loader.png';
@@ -30,13 +40,7 @@ const CardDetails = () => {
       className="card-details"
       style={{ background: colorsArray[0]?.primary || '#ccc' }}
     >
-      {isLoading ? (
-        <PokeLoader data-testid="poke-loader" />
-      ) : isError ? (
-        <div className="error">
-          {(error as Error)?.message || 'Failed to load Pokémon details'}
-        </div>
-      ) : pokemonData ? (
+      {pokemonData ? (
         <>
           <div className="details-container">
             <div className="details-header">
