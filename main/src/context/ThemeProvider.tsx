@@ -3,7 +3,9 @@ import { Theme, ThemeContext } from './ThemeContext';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const getTheme = (): Theme => {
-    return (localStorage.getItem('poke_theme') as Theme) || 'light';
+    if (typeof window === 'undefined') return 'light';
+    const theme = (localStorage.getItem('poke_theme') as Theme) || 'light';
+    return theme;
   };
 
   const [theme, setTheme] = useState<Theme>(getTheme);
