@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../../components/ErrorBoundary/ErrorBoundary.css';
+import '../../App.css';
 
 export default function NotFound() {
   const navigate = useNavigate();
