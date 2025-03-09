@@ -1,28 +1,34 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from './views/Header/Header';
-import './App.css';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { usePagination } from './utils/usePagination/usePagination';
-import { INITIAL_PAGE, POKEMONS_ON_PAGE } from './constants/constants';
+import { POKEMONS_ON_PAGE } from './constants/constants';
 import PokeLoader from './components/PokeLoader/PokeLoader';
-import { useGetPokemonsQuery, useSearchPokemonsQuery } from './services/api';
+import { useSearchPokemonsQuery } from './services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store';
 import { setAllPokemons } from './store/reducers/allPokemonsSlice';
 import { setCurrentPokemons } from './store/reducers/currentPokemonsSlice';
 import { Pokemon } from './types/types';
-import AppRoutes from './components/AppRoutes/AppRoutes';
 import PaginationControls from './components/PaginationControls/PaginationControls';
+import Main from './views/Main/Main';
+import './App.css';
 
-const App = () => {
+interface ClientAppProps {
+  serverData?: Pokemon[];
+  initialPage?: number;
+  initialQuery?: string;
+}
+
+const ClientApp = ({
+  serverData,
+  initialPage,
+  initialQuery,
+}: ClientAppProps) => {
+  const allPokemons = serverData;
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.loading.isLoading);
-  const {
-    data: allPokemons = [],
-    isError,
-    error,
-  } = useGetPokemonsQuery(undefined);
 
   useEffect(() => {
     if (allPokemons) {
@@ -30,24 +36,20 @@ const App = () => {
     }
   }, [allPokemons, dispatch]);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialPage = parseInt(
-    searchParams.get('page') || INITIAL_PAGE.toString()
-  );
+  const [, setSearchParams] = useSearchParams();
 
-  const searchQuery = useSelector(
+  const searchStoreQuery = useSelector(
     (state: RootState) => state.searchQuerySlice.value
   );
-  const trimmedQuery = searchQuery.trim();
-  const getAllResult = useGetPokemonsQuery(undefined, {
-    skip: trimmedQuery !== '',
-  });
-  const searchResult = useSearchPokemonsQuery(trimmedQuery, {
+  const trimmedQuery = searchStoreQuery
+    ? searchStoreQuery.trim()
+    : initialQuery?.trim();
+
+  const searchResult = useSearchPokemonsQuery(trimmedQuery || '', {
     skip: trimmedQuery === '',
   });
 
-  const currentInitData =
-    trimmedQuery !== '' ? searchResult.data : getAllResult.data;
+  const currentInitData = trimmedQuery !== '' ? searchResult.data : allPokemons;
 
   const { currentData, page, totalPages, nextPage, prevPage } = usePagination(
     currentInitData || (allPokemons as Pokemon[]),
@@ -62,8 +64,8 @@ const App = () => {
   }, [currentData, dispatch]);
 
   useEffect(() => {
-    setSearchParams({ page: page.toString(), q: searchQuery });
-  }, [page, searchQuery, setSearchParams]);
+    setSearchParams({ page: page.toString(), q: searchStoreQuery });
+  }, [page, searchStoreQuery, setSearchParams]);
 
   return (
     <div className="container">
@@ -71,18 +73,9 @@ const App = () => {
         <Header />
         {isLoading ? (
           <PokeLoader />
-        ) : isError ? (
-          <div className="broken">
-            <img
-              className="broken-pokeball"
-              src="/assets/img/broken-pokeball.png"
-              alt=""
-            />
-            <span>Error: {(error as Error).message}</span>
-          </div>
         ) : (
           <>
-            <AppRoutes />
+            <Main />
             {!isLoading && currentData.length > 0 && (
               <PaginationControls
                 page={page}
@@ -98,4 +91,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default ClientApp;
