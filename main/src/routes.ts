@@ -1,7 +1,8 @@
 import { type RouteConfig, route } from '@react-router/dev/routes';
 
 export default [
-  // * matches all URLs, the ? makes it optional so it will match / as well
-  route('/404', './views/NotFound/NotFound.tsx'),
-  route('*?', 'catchall.tsx'),
+  route('/', 'home.tsx', [
+    route('pokemon/:name', './views/CardDetails/CardDetails.tsx'),
+  ]),
+  route('/*', './views/NotFound/NotFound.tsx'),
 ] satisfies RouteConfig;

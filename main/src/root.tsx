@@ -1,16 +1,18 @@
 import React from 'react';
-// import { Provider } from 'react-redux';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
-// import { ThemeProvider } from './context/ThemeProvider';
-// import { store } from './store';
+import PokeLoader from './components/PokeLoader/PokeLoader';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from './context/ThemeProvider';
+import { store } from './store';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.png" /> */}
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>My App</title>
+        <title>Pokédex by sergiozeppo</title>
         <Meta />
         <Links />
       </head>
@@ -23,12 +25,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+export function HydrateFallback() {
+  return <PokeLoader />;
+}
+
 export default function Root() {
   return (
-    // <ThemeProvider>
-    //   <Provider store={store}>
-    <Outlet />
-    // </Provider>
-    // </ThemeProvider>
+    <ThemeProvider>
+      <Provider store={store}>
+        <Outlet />
+      </Provider>
+    </ThemeProvider>
   );
 }
