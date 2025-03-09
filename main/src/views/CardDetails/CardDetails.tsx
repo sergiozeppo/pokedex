@@ -21,7 +21,7 @@ export function HydrateFallback() {
 }
 
 const CardDetails = ({ loaderData }: Route.ComponentProps) => {
-  const pokemonData = loaderData.data;
+  const pokemonData = loaderData?.data || {};
   const navigate = useNavigate();
 
   const handleClick = () => navigate('/');

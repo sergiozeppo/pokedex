@@ -16,9 +16,9 @@ import Main from './views/Main/Main';
 import './App.css';
 
 interface ClientAppProps {
-  serverData: Pokemon[];
-  initialPage: number;
-  initialQuery: string;
+  serverData?: Pokemon[];
+  initialPage?: number;
+  initialQuery?: string;
 }
 
 const ClientApp = ({
@@ -43,9 +43,9 @@ const ClientApp = ({
   );
   const trimmedQuery = searchStoreQuery
     ? searchStoreQuery.trim()
-    : initialQuery.trim();
+    : initialQuery?.trim();
 
-  const searchResult = useSearchPokemonsQuery(trimmedQuery, {
+  const searchResult = useSearchPokemonsQuery(trimmedQuery || '', {
     skip: trimmedQuery === '',
   });
 
