@@ -88,3 +88,33 @@ span {
   display: flex;
   flex-direction: column;
 }
+
+.strength-meter {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.bar {
+  width: 25%;
+  height: 8px;
+  border-radius: 5px;
+  background: #fff;
+  transition: background 0.3s ease;
+}
+
+.bar.weak {
+  background: red;
+}
+
+.bar.medium {
+  background: orange;
+}
+
+.bar.strong {
+  background: yellow;
+}
+
+.bar.very-strong {
+  background: green;
+}

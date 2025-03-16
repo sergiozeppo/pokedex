@@ -4,11 +4,24 @@ import { RootState } from '../../store/store';
 import { validationSchema } from '../../constants/validation-schema';
 import { pictureToBase64 } from '../../utils/pictureToBase64';
 import { saveForm } from '../../store/reducers/formsSlice';
+import { useState } from 'react';
+import {
+  checkPassStrength,
+  getStrengthColor,
+} from '../../utils/checkPassStrength';
 
 export default function Uncontrolled() {
   const countries = useSelector((state: RootState) => state.countries);
   const dispatch = useDispatch();
   const navigator = useNavigate();
+  const [, setPassword] = useState('');
+  const [strength, setStrength] = useState(0);
+
+  const handlePasswordStrength = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setStrength(checkPassStrength(newPassword));
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,8 +75,23 @@ export default function Uncontrolled() {
         </label>
 
         <label htmlFor="password">
-          Password <input type="password" name="password" id="password" />
+          Password{' '}
+          <input
+            type="password"
+            name="password"
+            id="password"
+            onChange={handlePasswordStrength}
+          />
         </label>
+
+        <div className="strength-meter">
+          {[...Array(4)].map((_, index) => (
+            <div
+              key={index}
+              className={`bar ${index < strength ? getStrengthColor(strength) : ''}`}
+            ></div>
+          ))}
+        </div>
 
         <label htmlFor="confirmPassword">
           Confirm Password
