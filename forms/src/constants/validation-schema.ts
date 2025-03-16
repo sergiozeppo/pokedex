@@ -62,7 +62,7 @@ export const validationSchema = yup.object().shape({
       'File too large',
       (value) => value instanceof File && value.size <= IMAGE_MAX_SIZE
     )
-    .required('Required'),
+    .required('File is required'),
 
   country: yup
     .string()

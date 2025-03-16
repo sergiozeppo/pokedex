@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { inferred } from '../../constants/validation-schema';
+import { InferredType } from '../../constants/validation-schema';
 
-export type FormData = Omit<inferred, 'picture'> & { picture: string };
+export type FormData = Omit<InferredType, 'picture'> & { picture: string };
 
 const initialState: FormData[] = [];
 
