@@ -47,7 +47,7 @@ export default function Uncontrolled() {
 
   return (
     <>
-      <p>Uncontrolled form</p>
+      <h2>Uncontrolled form</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">
           Name <input type="text" name="name" id="name" />
@@ -70,17 +70,42 @@ export default function Uncontrolled() {
           <input type="password" name="confirmPassword" id="confirmPassword" />
         </label>
 
-        <label htmlFor="male">
-          Male
-          <input type="radio" name="gender" id="male" value="male" />
-        </label>
+        <div className="gender">
+          <div className="gender-wrapper">
+            <label htmlFor="male">
+              Male
+              <input
+                className="gender-input"
+                type="radio"
+                name="gender"
+                id="male"
+                value="male"
+              />
+            </label>
+            <label htmlFor="female">
+              Female
+              <input
+                className="gender-input"
+                type="radio"
+                name="gender"
+                id="female"
+                value="female"
+              />
+            </label>
+            <label htmlFor="other">
+              Other
+              <input
+                className="gender-input"
+                type="radio"
+                name="gender"
+                id="other"
+                value="other"
+              />
+            </label>
+          </div>
+        </div>
 
-        <label htmlFor="female">
-          Female
-          <input type="radio" name="gender" id="female" value="female" />
-        </label>
-
-        <label htmlFor="picture">
+        <label className="picture-label" htmlFor="picture">
           Choose a picture
           <input type="file" name="picture" id="picture" />
         </label>
@@ -96,14 +121,16 @@ export default function Uncontrolled() {
         </label>
 
         <label htmlFor="terms">
+          Accept Terms & Conditions
           <input type="checkbox" name="terms" id="terms" />
-          Accept T&C
         </label>
 
         <button type="submit">Submit</button>
       </form>
-      <div className="back">
-        <Link to="/ ">Back to main</Link>
+      <div className="links-wrapper">
+        <div className="form-link">
+          <Link to="/ ">Back to main</Link>
+        </div>
       </div>
     </>
   );

@@ -6,10 +6,22 @@ export default function Main() {
   const formSubmits = useSelector((state: RootState) => state.formData);
 
   return (
-    <>
+    <div>
+      <div className="header">
+        <h1>React Forms</h1>
+        <div className="links-wrapper">
+          <Link to="/uncontrolled" className="form-link">
+            Uncontrolled
+          </Link>
+          <Link to="/controlled" className="form-link">
+            React Hook Form
+          </Link>
+        </div>
+      </div>
+
       <main>
         {formSubmits.length === 0 ? (
-          <p>No forms submitted yet</p>
+          <p className="no-form-message">No forms submitted yet</p>
         ) : (
           <ul>
             {formSubmits.map((formSubmit, index) => (
@@ -33,14 +45,6 @@ export default function Main() {
           </ul>
         )}
       </main>
-      <div className="links-wrapper">
-        <Link to="/uncontrolled" className="form-link">
-          Uncontrolled
-        </Link>
-        <Link to="/controlled" className="form-link">
-          React Hook Form
-        </Link>
-      </div>
-    </>
+    </div>
   );
 }
