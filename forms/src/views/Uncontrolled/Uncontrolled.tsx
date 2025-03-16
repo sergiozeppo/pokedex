@@ -47,6 +47,7 @@ export default function Uncontrolled() {
           .then((base64) => {
             const submitData = { ...result, picture: base64 };
             dispatch(saveForm(submitData));
+            console.log(submitData);
             navigator('/', { state: true });
           })
           .catch((error) => console.error('Error processing image:', error));

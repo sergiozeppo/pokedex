@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 import { RootState } from '../../store/store';
+import Card from '../../components/Card/Card';
 
 export default function Main() {
   const formSubmits = useSelector((state: RootState) => state.formData);
@@ -23,26 +24,22 @@ export default function Main() {
         {formSubmits.length === 0 ? (
           <p className="no-form-message">No forms submitted yet</p>
         ) : (
-          <ul>
+          <div className="results-container">
             {formSubmits.map((formSubmit, index) => (
-              <li key={index}>
-                <img src={formSubmit.picture} alt={formSubmit.name} />
-                <dl>
-                  <div key={formSubmit.name}>
-                    <dt>{formSubmit.name}</dt>
-                    <dd>{formSubmit.age.toString()}</dd>
-                    <dt>{formSubmit.email}</dt>
-                    <dd>{formSubmit.country}</dd>
-                    <dt>{formSubmit.gender}</dt>
-                    <dd>{formSubmit.password}</dd>
-                    <dd>{formSubmit.confirmPassword}</dd>
-                    <dd>{formSubmit.picture}</dd>
-                    <dd>{formSubmit.terms}</dd>
-                  </div>
-                </dl>
-              </li>
+              <Card
+                key={index}
+                className={`result-card ${index === 0 ? 'new' : ''}`}
+                name={formSubmit.name}
+                age={formSubmit.age}
+                email={formSubmit.email}
+                password={formSubmit.password}
+                gender={formSubmit.gender}
+                country={formSubmit.country}
+                terms={formSubmit.terms}
+                picture={formSubmit.picture}
+              />
             ))}
-          </ul>
+          </div>
         )}
       </main>
     </div>
