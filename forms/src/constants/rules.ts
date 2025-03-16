@@ -1,0 +1,9 @@
+export const LOWERCASE_LETTER = /[a-z]/;
+export const FIRST_UPPERCASE_LETTER = /^[A-Z][a-zA-Z]*$/;
+export const UPPERCASE_LETTER = /[A-Z]/;
+export const SPECIAL_CHARACTER = /[!@#$%^&*(),.?":{}|<>]/;
+export const NUMBER = /[0-9]/;
+export const EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const PICTURE_FILE_TYPES = ['image/jpeg', 'image/png'];
+export const IMAGE_MAX_SIZE = 1024 * 1024 * 2;
+export const AGE_MAX = 100;
