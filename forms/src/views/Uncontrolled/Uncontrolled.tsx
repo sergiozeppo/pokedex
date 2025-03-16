@@ -9,11 +9,13 @@ import {
   checkPassStrength,
   getStrengthColor,
 } from '../../utils/checkPassStrength';
+import { z } from 'zod';
 
 export default function Uncontrolled() {
   const countries = useSelector((state: RootState) => state.countries);
   const dispatch = useDispatch();
   const navigator = useNavigate();
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [, setPassword] = useState('');
   const [strength, setStrength] = useState(0);
 
@@ -35,12 +37,14 @@ export default function Uncontrolled() {
     formEntries.age = Number(formEntries.age) || 0;
     formEntries.terms = formData.get('terms') === 'on';
     formEntries.picture = formData.get('picture') || null;
+    formEntries.confirmPassword = formData.get('confirmPassword') || null;
     const fileInput = formData.get('picture');
     formEntries.picture =
       fileInput instanceof File && fileInput.size > 0 ? fileInput : null;
 
     try {
       const result = validationSchema.parse(formEntries);
+      setErrors({});
 
       if (result.picture instanceof File) {
         pictureToBase64(result.picture)
@@ -55,7 +59,20 @@ export default function Uncontrolled() {
         console.error('Invalid file input');
       }
     } catch (error) {
-      console.error('Validation error:', error);
+      if (error instanceof z.ZodError) {
+        console.log('Raw errors:', error.errors);
+        const formattedErrors = error.errors.reduce(
+          (acc, err) => {
+            const key = err.path.join('.');
+            acc[key] = err.message;
+            return acc;
+          },
+          {} as Record<string, string>
+        );
+
+        setErrors(formattedErrors);
+        console.log('Form errors:', formattedErrors);
+      }
     }
   };
 
@@ -64,15 +81,18 @@ export default function Uncontrolled() {
       <h2>Uncontrolled form</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">
-          Name <input type="text" name="name" id="name" />
+          <span>Name</span> <input type="text" name="name" id="name" />
+          {errors.name && <p className="error">{errors.name}</p>}
         </label>
 
         <label htmlFor="age">
           Age <input type="text" name="age" id="age" />
+          {errors.age && <p className="error">{errors.age}</p>}
         </label>
 
         <label htmlFor="email">
           Email <input type="email" name="email" id="email" />
+          {errors.email && <p className="error">{errors.email}</p>}
         </label>
 
         <label htmlFor="password">
@@ -83,6 +103,7 @@ export default function Uncontrolled() {
             id="password"
             onChange={handlePasswordStrength}
           />
+          {errors.password && <p className="error">{errors.password}</p>}
         </label>
 
         <div className="strength-meter">
@@ -97,6 +118,9 @@ export default function Uncontrolled() {
         <label htmlFor="confirmPassword">
           Confirm Password
           <input type="password" name="confirmPassword" id="confirmPassword" />
+          {errors['confirmPassword'] && (
+            <p className="error">{errors['confirmPassword']}</p>
+          )}
         </label>
 
         <div className="gender">
@@ -132,11 +156,13 @@ export default function Uncontrolled() {
               />
             </label>
           </div>
+          {errors.gender && <p className="error">{errors.gender}</p>}
         </div>
 
         <label className="picture-label" htmlFor="picture">
           Choose a picture
           <input type="file" name="picture" id="picture" />
+          {errors.picture && <p className="error">{errors.picture}</p>}
         </label>
 
         <label htmlFor="country">
@@ -147,11 +173,13 @@ export default function Uncontrolled() {
               <option key={country} value={country} />
             ))}
           </datalist>
+          {errors.country && <p className="error">{errors.country}</p>}
         </label>
 
         <label htmlFor="terms">
           Accept Terms & Conditions
           <input type="checkbox" name="terms" id="terms" />
+          {errors.terms && <p className="error">{errors.terms}</p>}
         </label>
 
         <button type="submit">Submit</button>

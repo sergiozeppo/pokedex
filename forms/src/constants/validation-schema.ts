@@ -33,7 +33,7 @@ export const validationSchema = z
       .regex(UPPERCASE_LETTER, 'Must include an uppercase letter')
       .regex(LOWERCASE_LETTER, 'Must include a lowercase letter')
       .regex(SPECIAL_CHARACTER, 'Must include a special character'),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().min(1, 'Confirm Password is required'),
     gender: z.enum(['male', 'female', 'other']),
     picture: z
       .custom<File>((file) => file instanceof File, 'Invalid file input')
@@ -53,9 +53,14 @@ export const validationSchema = z
       .boolean()
       .refine((val) => val === true, 'You must accept the terms'),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords must match',
-    path: ['confirmPassword'],
+  .superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'The passwords did not match',
+        path: ['confirmPassword'],
+      });
+    }
   });
 
 export type inferred = z.infer<typeof validationSchema>;
