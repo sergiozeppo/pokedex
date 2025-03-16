@@ -1,7 +1,10 @@
 import { Link } from 'react-router';
-import { COUNTRIES_LIST } from '../../constants/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 export default function Uncontrolled() {
+  const countries = useSelector((state: RootState) => state.countries);
+
   return (
     <>
       <p>Uncontrolled form</p>
@@ -33,7 +36,7 @@ export default function Uncontrolled() {
         <label htmlFor="countries">
           Choose country
           <select id="countries">
-            {COUNTRIES_LIST.map((country) => (
+            {countries.map((country) => (
               <option key={country} value={country}>
                 {country}
               </option>
