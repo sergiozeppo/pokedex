@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router';
-import Controlled from './components/Controlled/Controlled';
-import Main from './components/Main/Main';
-import Uncontrolled from './components/Uncontrolled/Uncontrolled';
+import Controlled from './views/Controlled/Controlled';
+import Main from './views/Main/Main';
+import Uncontrolled from './views/Uncontrolled/Uncontrolled';
 import './App.css';
 
 function App() {
