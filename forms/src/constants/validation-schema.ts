@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as yup from 'yup';
 import {
   AGE_MAX,
   EMAIL,
@@ -12,55 +12,64 @@ import {
 } from './rules';
 import { COUNTRIES_LIST } from './constants';
 
-export const validationSchema = z
-  .object({
-    name: z
-      .string()
-      .regex(
-        FIRST_UPPERCASE_LETTER,
-        'Name must start with an uppercase letter'
-      ),
-    age: z
-      .number()
-      .positive('Age must be > 0')
-      .refine((age) => age <= AGE_MAX, 'Age must be truthful'),
-    email: z.string().refine((value) => EMAIL.test(value), {
-      message: 'Invalid email format. Example: example@domain.com',
-    }),
-    password: z
-      .string()
-      .regex(NUMBER, 'Must include a number')
-      .regex(UPPERCASE_LETTER, 'Must include an uppercase letter')
-      .regex(LOWERCASE_LETTER, 'Must include a lowercase letter')
-      .regex(SPECIAL_CHARACTER, 'Must include a special character'),
-    confirmPassword: z.string().min(1, 'Confirm Password is required'),
-    gender: z.enum(['male', 'female', 'other']),
-    picture: z
-      .custom<File>((file) => file instanceof File, 'Invalid file input')
-      .refine((file) => file && PICTURE_FILE_TYPES.includes(file.type), {
-        message: 'Only PNG and JPEG are allowed',
-      })
-      .refine((file) => file && file.size <= IMAGE_MAX_SIZE, {
-        message: 'Filesize should be less than 2MB',
-      }),
-    country: z
-      .string()
-      .nonempty('Country is required')
-      .refine((value) => COUNTRIES_LIST.includes(value), {
-        message: 'Should be a country from the list',
-      }),
-    terms: z
-      .boolean()
-      .refine((val) => val === true, 'You must accept the terms'),
-  })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'The passwords did not match',
-        path: ['confirmPassword'],
-      });
-    }
-  });
+export const validationSchema = yup.object().shape({
+  name: yup
+    .string()
+    .matches(FIRST_UPPERCASE_LETTER, 'Name must start with an uppercase letter')
+    .required(),
 
-export type inferred = z.infer<typeof validationSchema>;
+  age: yup
+    .number()
+    .positive('Age must be > 0')
+    .max(AGE_MAX, 'Age must be truthful')
+    .required(),
+
+  email: yup
+    .string()
+    .matches(EMAIL, 'Invalid email format. Example: example@domain.com')
+    .required(),
+
+  password: yup
+    .string()
+    .matches(NUMBER, 'Must include a number')
+    .matches(UPPERCASE_LETTER, 'Must include an uppercase letter')
+    .matches(LOWERCASE_LETTER, 'Must include a lowercase letter')
+    .matches(SPECIAL_CHARACTER, 'Must include a special character')
+    .required(),
+
+  confirm: yup
+    .string()
+    .required('Confirm Password is required')
+    .oneOf([yup.ref('password')], 'The passwords did not match'),
+
+  gender: yup.string().oneOf(['male', 'female', 'other']).required(),
+
+  picture: yup
+    .mixed<File>()
+    .test(
+      'file-required',
+      'File is required',
+      (value) => value instanceof File && value.size > 0
+    )
+    .test(
+      'file-type',
+      'Invalid file type',
+      (value) =>
+        value instanceof File && PICTURE_FILE_TYPES.includes(value.type)
+    )
+    .test(
+      'file-size',
+      'File too large',
+      (value) => value instanceof File && value.size <= IMAGE_MAX_SIZE
+    )
+    .required('Required'),
+
+  country: yup
+    .string()
+    .required('Country is required')
+    .oneOf(COUNTRIES_LIST, 'Should be a country from the list'),
+
+  terms: yup.boolean().isTrue('You must accept the terms').required(),
+});
+
+export type InferredType = yup.InferType<typeof validationSchema>;

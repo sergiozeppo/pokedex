@@ -9,7 +9,7 @@ import {
   checkPassStrength,
   getStrengthColor,
 } from '../../utils/checkPassStrength';
-import { z } from 'zod';
+import * as yup from 'yup';
 
 export default function Uncontrolled() {
   const countries = useSelector((state: RootState) => state.countries);
@@ -37,13 +37,16 @@ export default function Uncontrolled() {
     formEntries.age = Number(formEntries.age) || 0;
     formEntries.terms = formData.get('terms') === 'on';
     formEntries.picture = formData.get('picture') || null;
-    formEntries.confirmPassword = formData.get('confirmPassword') || null;
+    formEntries.confirm = formData.get('confirm') || null;
+    formEntries.password = formData.get('password') || null;
     const fileInput = formData.get('picture');
     formEntries.picture =
       fileInput instanceof File && fileInput.size > 0 ? fileInput : null;
 
     try {
-      const result = validationSchema.parse(formEntries);
+      const result = validationSchema.validateSync(formEntries, {
+        abortEarly: false,
+      });
       setErrors({});
 
       if (result.picture instanceof File) {
@@ -59,19 +62,17 @@ export default function Uncontrolled() {
         console.error('Invalid file input');
       }
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.log('Raw errors:', error.errors);
-        const formattedErrors = error.errors.reduce(
+      if (error instanceof yup.ValidationError) {
+        const formattedErrors = error.inner.reduce(
           (acc, err) => {
-            const key = err.path.join('.');
-            acc[key] = err.message;
+            if (err.path) {
+              acc[err.path] = err.message;
+            }
             return acc;
           },
           {} as Record<string, string>
         );
-
         setErrors(formattedErrors);
-        console.log('Form errors:', formattedErrors);
       }
     }
   };
@@ -115,12 +116,10 @@ export default function Uncontrolled() {
           ))}
         </div>
 
-        <label htmlFor="confirmPassword">
+        <label htmlFor="confirm">
           Confirm Password
-          <input type="password" name="confirmPassword" id="confirmPassword" />
-          {errors['confirmPassword'] && (
-            <p className="error">{errors['confirmPassword']}</p>
-          )}
+          <input type="password" name="confirm" id="confirm" />
+          {errors.confirm && <p className="error">{errors.confirm}</p>}
         </label>
 
         <div className="gender">
