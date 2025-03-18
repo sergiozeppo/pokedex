@@ -1,1 +1,1 @@
-npm test
+cd performance && npm run format && npm run lint
