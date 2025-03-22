@@ -9,9 +9,17 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('');
   const [sortOrder, setSortOrder] = useState({ key: 'name', asc: true });
+  const [visited, setVisited] = useState<string[]>([]);
 
   useEffect(() => {
     fetchCountries().then(setCountries);
+  }, []);
+
+  useEffect(() => {
+    const savedVisited = localStorage.getItem('sergiozeppo_visited');
+    if (savedVisited) {
+      setVisited(JSON.parse(savedVisited));
+    }
   }, []);
 
   const filteredCountries = useMemo(() => {
@@ -47,6 +55,20 @@ function App() {
     []
   );
 
+  const toggleVisited = useCallback((countryName: string) => {
+    setVisited((prev) => {
+      const updatedVisited = prev.includes(countryName)
+        ? prev.filter((name) => name !== countryName)
+        : [...prev, countryName];
+
+      localStorage.setItem(
+        'sergiozeppo_visited',
+        JSON.stringify(updatedVisited)
+      );
+      return updatedVisited;
+    });
+  }, []);
+
   return (
     <div className="p-4">
       <Header
@@ -66,6 +88,8 @@ function App() {
             flag={country.flags.svg}
             population={country.population}
             region={country.region}
+            visited={visited.includes(country.name.common)}
+            onToggleVisited={toggleVisited}
           />
         ))}
       </div>
