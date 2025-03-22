@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface CardProps {
   name: string;
   flag: string;
@@ -5,7 +7,7 @@ interface CardProps {
   region: string;
 }
 
-export default function Card({ name, flag, population, region }: CardProps) {
+const Card = memo(({ name, flag, population, region }: CardProps) => {
   return (
     <div className="bg-white shadow-lg rounded-2xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
       <img src={flag} alt={name} className="w-full h-40 object-cover" />
@@ -16,4 +18,6 @@ export default function Card({ name, flag, population, region }: CardProps) {
       </div>
     </div>
   );
-}
+});
+
+export default Card;
