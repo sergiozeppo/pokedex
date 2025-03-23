@@ -44,6 +44,26 @@ _Ranked chart_
 
 ## Performance After Optimization
 
+### Initial render
+
+- **Render Duration:** 22.5ms
+- **Commit Duration:** 0.2ms
+- **Interaction:** Loading initial page
+
+<details>
+<summary>Performance Metrics Screenshots</summary>
+
+![Timeline (Interactions)](./public/assets/metrics/initRender_opti_interact.png)
+_Timeline (Interactions)_
+
+![Flame Graph](./public/assets/metrics/initRender_opti_flame.png)
+_Flame graph_
+
+![Ranked Chart](./public/assets/metrics/initRender_opti_ranked.png)
+_Ranked chart_
+
+</details>
+
 ### Sort by name after optimization
 
 - **Render Duration:** 1.8ms
