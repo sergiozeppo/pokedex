@@ -42,6 +42,8 @@ _Ranked chart_
 
 </details>
 
+## Performance After Optimization
+
 ### Sort by name after optimization
 
 - **Render Duration:** 1.8ms
