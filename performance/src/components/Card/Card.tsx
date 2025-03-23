@@ -22,7 +22,13 @@ const Card = memo(
         }
         onClick={() => onToggleVisited(name)}
       >
-        <img src={flag} alt={name} className="w-full h-40 object-cover" />
+        <img
+          src={flag}
+          alt={name}
+          className="w-full h-40 object-cover"
+          loading="lazy"
+          decoding="async"
+        />
         <div className="p-4">
           <h3 className="text-lg font-bold mb-2">{name}</h3>
           <p className="text-gray-700">Population: {population}</p>

@@ -10,11 +10,16 @@ export interface Country {
   region: string;
 }
 
+const cache: { data: Country[] | null } = { data: null };
+
 export const fetchCountries = async () => {
-  return await fetch('https://restcountries.com/v3.1/all')
+  if (cache.data) return cache.data;
+
+  return fetch('https://restcountries.com/v3.1/all')
     .then((response) => response.json())
     .then((data) => {
-      return data as Country[];
+      cache.data = data as Country[];
+      return cache.data;
     })
     .catch((error) => {
       console.error('Error in fetchData:', error);
