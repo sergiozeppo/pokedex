@@ -42,6 +42,26 @@ _Ranked chart_
 
 </details>
 
+### Search country (letter combination "A", then "S")
+
+- **Render Duration:** 74.3ms (48.6ms ("Init render") + 18.4ms ("A") (11.6ms + 6.8ms) + 7.3ms ("S") (6.8ms + 0.5ms))
+- **Commit Duration:** 16.8s (0.2ms ("Init render") + 6.4s ("A") + 10.2s ("S"))
+- **Interaction:** Changing searchbar input
+
+<details>
+<summary>Performance Metrics Screenshots</summary>
+
+![Timeline (Interactions)](./public/assets/metrics/searchRender_interact.png)
+_Timeline (Interactions)_
+
+![Flame Graph](./public/assets/metrics/searchRender_flame.png)
+_Flame graph_
+
+![Ranked Chart](./public/assets/metrics/searchRender_ranked.png)
+_Ranked chart_
+
+</details>
+
 ## Performance After Optimization
 
 ### Initial render
@@ -86,8 +106,8 @@ _Ranked chart_
 
 ### Search country (letter combination "A", then "S")
 
-- **Render Duration:** 55ms (50.6ms ("Init render") + 3.6ms ("A") + 0.8ms ("S"))
-- **Commit Duration:** 6.8s (0.2ms ("Init render") + 1.9s ("A") + 4.7s ("S"))
+- **Render Duration:** 37.1ms (32.9ms ("Init render") + 2.6ms ("A") + 1.6ms ("S"))
+- **Commit Duration:** 3.7s (0.1ms ("Init render") + 1.4s ("A") + 2.2s ("S"))
 - **Interaction:** Changing searchbar input
 
 <details>
