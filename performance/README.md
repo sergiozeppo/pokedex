@@ -1,54 +1,83 @@
-# React + TypeScript + Vite
+# React performance task
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Performance Before Optimization
 
-Currently, two official plugins are available:
+### Initial render
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Render Duration:** 48.9ms
+- **Commit Duration:** 0.2ms
+- **Interaction:** Loading initial page
 
-## Expanding the ESLint configuration
+<details>
+<summary>Performance Metrics Screenshots</summary>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![Timeline (Interactions)](./public/assets/metrics/initRender_interact.png)
+_Timeline (Interactions)_
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+![Flame Graph](./public/assets/metrics/initRender_flame.png)
+_Flame graph_
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+![Ranked Chart](./public/assets/metrics/initRender_ranked.png)
+_Ranked chart_
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+</details>
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+### Sort by name before optimization
+
+- **Render Duration:** 16ms (7.9ms + 7.9ms)
+- **Commit Duration:** 0.2ms
+- **Interaction:** Sorting countries by name
+
+<details>
+<summary>Performance Metrics Screenshots</summary>
+
+![Timeline (Interactions)](./public/assets/metrics/sortRender_interact.png)
+_Timeline (Interactions)_
+
+![Flame Graph](./public/assets/metrics/sortRender_flame.png)
+_Flame graph_
+
+![Ranked Chart](./public/assets/metrics/sortRender_ranked.png)
+_Ranked chart_
+
+</details>
+
+### Sort by name after optimization
+
+- **Render Duration:** 1.8ms
+- **Commit Duration:** 2s
+- **Interaction:** Sorting countries by name
+
+<details>
+<summary>Performance Metrics Screenshots</summary>
+
+![Timeline (Interactions)](./public/assets/metrics/sortRender_opti_interact.png)
+_Timeline (Interactions)_
+
+![Flame Graph](./public/assets/metrics/sortRender_opti_flame.png)
+_Flame graph_
+
+![Ranked Chart](./public/assets/metrics/sortRender_opti_ranked.png)
+_Ranked chart_
+
+</details>
+
+### Search country (letter combination "A", then "S")
+
+- **Render Duration:** 55ms (50.6ms ("Init render") + 3.6ms ("A") + 0.8ms ("S"))
+- **Commit Duration:** 6.8s (0.2ms ("Init render") + 1.9s ("A") + 4.7s ("S"))
+- **Interaction:** Changing searchbar input
+
+<details>
+<summary>Performance Metrics Screenshots</summary>
+
+![Timeline (Interactions)](./public/assets/metrics/searchRender_opti_interact.png)
+_Timeline (Interactions)_
+
+![Flame Graph](./public/assets/metrics/searchRender_opti_flame.png)
+_Flame graph_
+
+![Ranked Chart](./public/assets/metrics/searchRender_opti_ranked.png)
+_Ranked chart_
+
+</details>
