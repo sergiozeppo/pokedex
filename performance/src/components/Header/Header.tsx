@@ -29,7 +29,14 @@ const Header = memo(
 
     return (
       <header className="flex flex-col md:flex-row justify-between items-center bg-gray-900 text-white p-4 shadow-lg rounded-xl">
-        <h1 className="text-2xl font-bold">VSESTRANY.RU</h1>
+        <div className="flex flex-row justify-between items-center gap-4">
+          <img
+            src="/assets/icons/trip.png"
+            alt="TravelLog"
+            style={{ width: '86px', height: '86px' }}
+          />
+          <h1 className="text-2xl font-bold">TravelLog</h1>
+        </div>
 
         <div className="flex flex-wrap gap-4 mt-2 md:mt-0">
           <div className="relative">
@@ -66,7 +73,7 @@ const Header = memo(
               className="px-3 py-2 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700"
             >
               Sort by Name{' '}
-              {sortOrder.key === 'name' ? (sortOrder.asc ? '⬆️' : '⬇️') : ''}
+              {sortOrder.key === 'name' ? (sortOrder.asc ? '↑' : '↓') : ''}
             </div>
             <div
               onClick={() =>
@@ -80,8 +87,8 @@ const Header = memo(
               Sort by Population{' '}
               {sortOrder.key === 'population'
                 ? sortOrder.asc
-                  ? '⬆️'
-                  : '⬇️'
+                  ? '↑'
+                  : '↓'
                 : ''}
             </div>
           </div>
