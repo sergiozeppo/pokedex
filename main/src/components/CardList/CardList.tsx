@@ -1,29 +1,33 @@
-import { Component, ReactNode } from 'react';
 import './CardList.css';
-import { Pokemon } from '../../types/types';
 import Card from '../Card/Card';
+import PokeLoader from '../PokeLoader/PokeLoader';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
-interface CardListProps {
-  pokemons: Pokemon[];
-  isFetching: boolean;
-}
+function CardList() {
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading);
+  const navigate = useNavigate();
+  const currentPokemons = useSelector(
+    (state: RootState) => state.currentPokemonsSlice.pokemons
+  );
 
-class CardList extends Component<CardListProps> {
-  render(): ReactNode {
-    const { pokemons } = this.props;
-
-    return (
-      <div className="card-list">
-        {Array.isArray(pokemons) && pokemons.length > 0 ? (
-          pokemons.map((pokemon, index) => (
+  return (
+    <>
+      <div className="card-list" onClick={() => navigate('/')}>
+        {isLoading && <PokeLoader />}
+        {Array.isArray(currentPokemons) &&
+        currentPokemons.length > 0 &&
+        !isLoading ? (
+          currentPokemons.map((pokemon, index) => (
             <Card key={index} name={pokemon.name} />
           ))
         ) : (
           <p>No Pokémon available.</p>
         )}
       </div>
-    );
-  }
+    </>
+  );
 }
 
 export default CardList;

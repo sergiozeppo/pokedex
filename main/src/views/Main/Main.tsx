@@ -1,23 +1,18 @@
-import { Component, ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import CardList from '../../components/CardList/CardList';
 import './Main.css';
-import { Pokemon } from '../../types/types';
+import Modal from '../../components/Modal/Modal';
 
-type MainProps = {
-  pokemons: Pokemon[];
-  isFetching: boolean;
-};
-
-class Main extends Component<MainProps> {
-  render(): ReactNode {
-    const { pokemons, isFetching } = this.props;
-
-    return (
-      <main>
-        <CardList pokemons={pokemons} isFetching={isFetching} />
-      </main>
-    );
-  }
+function Main() {
+  return (
+    <main className="main-container">
+      <div className="content-wrapper">
+        <CardList />
+        <Outlet />
+        <Modal />
+      </div>
+    </main>
+  );
 }
 
 export default Main;

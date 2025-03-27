@@ -1,64 +1,60 @@
-import { Component, ChangeEvent, KeyboardEvent } from 'react';
-import { SearchBarProps } from '../../types/types';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import './SearchBar.css';
 import Button from '../Button/Button';
+import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
+import { useDispatch } from 'react-redux';
+import { useSearchQuery } from '../../utils/useSearchQuery/useSearchQuery';
+import { setSearchQuery } from '../../store/reducers/searchQuerySlice';
 
-interface ErrorState {
-  hasError: boolean;
-}
+function SearchBar() {
+  const dispatch = useDispatch();
+  const [hasError, setHasError] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const { updateSearchQuery } = useSearchQuery();
 
-class SearchBar extends Component<SearchBarProps, ErrorState> {
-  state: ErrorState = {
-    hasError: false,
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
-  handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.props.onInputChange(event.target.value);
-  };
-
-  handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      this.props.onSearch(this.props.searchQuery);
+      dispatch(setSearchQuery(inputValue.trim()));
+      updateSearchQuery(inputValue.trim());
     }
   };
 
-  handleSearchClick = () => {
-    this.props.onSearch(this.props.searchQuery);
+  const handleSearchClick = () => {
+    dispatch(setSearchQuery(inputValue.trim()));
+    updateSearchQuery(inputValue.trim());
   };
 
-  handleClick = () => {
-    this.setState({ hasError: true });
+  const handleErrorClick = () => {
+    setHasError(true);
   };
 
-  render() {
-    const { hasError } = this.state;
-
-    if (hasError) {
-      throw new Error('Custom error for test ErrorBoundary');
-    }
-
-    return (
-      <div className="search-bar">
-        <input
-          className="search-input"
-          value={this.props.searchQuery}
-          type="text"
-          placeholder="Search"
-          onChange={this.handleInputChange}
-          onKeyDown={this.handleKeyDown}
-        />
-        <Button
-          className="button"
-          title="Search"
-          onClick={this.handleSearchClick}
-        >
-          Search
-        </Button>
-        <button className="error-button" onClick={this.handleClick}>
-          ERROR!
-        </button>
-      </div>
-    );
+  if (hasError) {
+    throw new Error('Custom error for test ErrorBoundary');
   }
+
+  return (
+    <div className="search-bar">
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Search"
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+      />
+      <Button className="button" title="Search" onClick={handleSearchClick}>
+        Search
+      </Button>
+      <ThemeSwitcher />
+      <button className="error-button" onClick={handleErrorClick}>
+        ERROR!
+      </button>
+    </div>
+  );
 }
+
 export default SearchBar;

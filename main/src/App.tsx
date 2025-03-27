@@ -1,117 +1,101 @@
-import { Component, ReactNode } from 'react';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Header from './views/Header/Header';
-import { fetchData, fetchSearchData } from './services/api';
 import './App.css';
-import Main from './views/Main/Main';
-import { Pokemon } from './types/types';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import { usePagination } from './utils/usePagination/usePagination';
+import { INITIAL_PAGE, POKEMONS_ON_PAGE } from './constants/constants';
+import PokeLoader from './components/PokeLoader/PokeLoader';
+import { useGetPokemonsQuery, useSearchPokemonsQuery } from './services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from './store';
+import { setAllPokemons } from './store/reducers/allPokemonsSlice';
+import { setCurrentPokemons } from './store/reducers/currentPokemonsSlice';
+import { Pokemon } from './types/types';
+import AppRoutes from './components/AppRoutes/AppRoutes';
+import PaginationControls from './components/PaginationControls/PaginationControls';
 
-interface AppState {
-  pokemons: Pokemon[];
-  allPokemons: Pokemon[];
-  error: Error | null;
-  isFetching: boolean;
-  searchQuery: string;
-}
+const App = () => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading);
+  const {
+    data: allPokemons = [],
+    isError,
+    error,
+  } = useGetPokemonsQuery(undefined);
 
-class App extends Component<Record<string, never>, AppState> {
-  state: AppState = {
-    searchQuery: '',
-    pokemons: [],
-    allPokemons: [],
-    isFetching: false,
-    error: null,
-  };
-
-  componentDidMount() {
-    this.handleFetchData().then(() => {
-      const prevSearch = localStorage.getItem('searchPokemon');
-      if (prevSearch) {
-        this.setState({ searchQuery: prevSearch }, () => {
-          this.handleSearchData(prevSearch);
-        });
-      }
-    });
-  }
-
-  handleFetchData = async () => {
-    this.setState({ isFetching: true, error: null });
-
-    try {
-      const allPokemons = await fetchData();
-      this.setState({ allPokemons, pokemons: allPokemons });
-    } catch (error) {
-      this.setState({
-        error: error instanceof Error ? error : new Error('Unknown error'),
-      });
-    } finally {
-      this.setState({ isFetching: false });
+  useEffect(() => {
+    if (allPokemons) {
+      dispatch(setAllPokemons(allPokemons));
     }
-  };
+  }, [allPokemons, dispatch]);
 
-  handleSearchData = async (searchData: string) => {
-    this.setState({
-      isFetching: true,
-      searchQuery: searchData.trim(),
-      error: null,
-    });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialPage = parseInt(
+    searchParams.get('page') || INITIAL_PAGE.toString()
+  );
 
-    if (!searchData) {
-      localStorage.removeItem('searchPokemon');
-      this.handleFetchData();
-      return;
+  const searchQuery = useSelector(
+    (state: RootState) => state.searchQuerySlice.value
+  );
+  const trimmedQuery = searchQuery.trim();
+  const getAllResult = useGetPokemonsQuery(undefined, {
+    skip: trimmedQuery !== '',
+  });
+  const searchResult = useSearchPokemonsQuery(trimmedQuery, {
+    skip: trimmedQuery === '',
+  });
+
+  const currentInitData =
+    trimmedQuery !== '' ? searchResult.data : getAllResult.data;
+
+  const { currentData, page, totalPages, nextPage, prevPage } = usePagination(
+    currentInitData || (allPokemons as Pokemon[]),
+    initialPage,
+    POKEMONS_ON_PAGE
+  );
+
+  useEffect(() => {
+    if (currentData) {
+      dispatch(setCurrentPokemons(currentData));
     }
+  }, [currentData, dispatch]);
 
-    try {
-      const { allPokemons } = this.state;
-      const pokemons = await fetchSearchData(searchData.trim(), allPokemons);
-      this.setState({ pokemons });
-      localStorage.setItem('searchPokemon', searchData.trim());
-    } catch (error) {
-      this.setState({
-        error: error instanceof Error ? error : new Error('Unknown error'),
-        pokemons: [],
-      });
-    } finally {
-      this.setState({ isFetching: false });
-    }
-  };
+  useEffect(() => {
+    setSearchParams({ page: page.toString(), q: searchQuery });
+  }, [page, searchQuery, setSearchParams]);
 
-  handleInputChange = (searchQuery: string) => {
-    this.setState({ searchQuery });
-  };
-
-  render(): ReactNode {
-    const { pokemons, isFetching, error, searchQuery } = this.state;
-
-    return (
-      <div className="container">
-        <ErrorBoundary>
-          <Header
-            onSearch={this.handleSearchData}
-            searchQuery={searchQuery}
-            onInputChange={this.handleInputChange}
-          />
-          {isFetching ? (
-            <div className="pokeball-loader-container">
-              <div className="pokeball-loader"></div>
-            </div>
-          ) : error ? (
-            <div className="broken">
-              <img
-                className="broken-pokeball"
-                src="/assets/img/broken-pokeball.png"
-                alt=""
+  return (
+    <div className="container">
+      <ErrorBoundary>
+        <Header />
+        {isLoading ? (
+          <PokeLoader />
+        ) : isError ? (
+          <div className="broken">
+            <img
+              className="broken-pokeball"
+              src="/assets/img/broken-pokeball.png"
+              alt=""
+            />
+            <span>Error: {(error as Error).message}</span>
+          </div>
+        ) : (
+          <>
+            <AppRoutes />
+            {!isLoading && currentData.length > 0 && (
+              <PaginationControls
+                page={page}
+                totalPages={totalPages}
+                nextPage={nextPage}
+                prevPage={prevPage}
               />
-              <span>Error: {error.message}</span>
-            </div>
-          ) : (
-            <Main pokemons={pokemons} isFetching={isFetching} />
-          )}
-        </ErrorBoundary>
-      </div>
-    );
-  }
-}
+            )}
+          </>
+        )}
+      </ErrorBoundary>
+    </div>
+  );
+};
 
 export default App;

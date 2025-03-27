@@ -1,0 +1,262 @@
+.card-details {
+  display: flex;
+  width: 360px;
+  height: 684px;
+  padding: 4px;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  justify-content: center;
+  gap: 20px;
+  border-radius: 8px;
+  background: var(--secondary-bg);
+  box-shadow: var(--box-shadow-inset);
+}
+
+.card-list {
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-header {
+  display: flex;
+  flex-direction: column;
+  background: url('../assets/img/pokeball.svg');
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: auto;
+}
+
+.details-title {
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  color: var(--secondary-bg);
+}
+
+.details-close {
+  cursor: pointer;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  background: url('../assets/img/close.svg');
+}
+
+.details-h2 {
+  display: flex;
+  width: 200px;
+  flex: 1 0 0;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 25px;
+  text-transform: capitalize;
+}
+
+.details-id {
+  display: flex;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+  justify-content: flex-end;
+}
+
+.details-img {
+  display: flex;
+  padding: 16px 20px;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+.details-img img {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-card {
+  display: flex;
+  height: 350px;
+  padding: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  flex-shrink: 0;
+  align-self: stretch;
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow-inset);
+}
+
+.details-types {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.details-type {
+  display: flex;
+  padding: 2px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 10px;
+}
+
+.details-type-name {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.details-about {
+  align-self: stretch;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.details-attributes {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  color: var(--text-attr);
+}
+
+.details-attr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1 0 0;
+}
+
+.details-attr {
+  display: flex;
+  padding: 8px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.details-attr-text {
+  color: var(--text-attr);
+  text-align: center;
+  align-self: stretch;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 12px;
+}
+
+.details-attr-data {
+  color: var(--text-attr);
+  text-align: justify;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.details-attr-moves {
+  display: flex;
+  flex-direction: column;
+  height: 32px;
+  align-items: center;
+  gap: 4px;
+}
+
+.details-attr-moves-text {
+  color: var(--text-attr);
+  text-transform: capitalize;
+  text-align: justify;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+}
+
+.divider {
+  width: 1px;
+  height: 48px;
+  align-self: stretch;
+  background: var(--divider);
+}
+
+.details-stats {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.details-stats-label-section {
+  display: flex;
+  gap: 8px;
+  padding-right: 4px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.details-stats-label-name {
+  width: 27px;
+  color: inherit;
+  text-align: right;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.stats-divider {
+  width: 1px;
+  align-self: stretch;
+  height: 140px;
+  background: var(--divider);
+}
+
+.data-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1 0 0;
+  gap: 8px;
+}
+
+.stat-value {
+  color: var(--text-attr);
+  align-self: flex-start;
+  width: 25px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.details-img-weight {
+  background-color: var(--text-attr);
+  mask-image: url('../assets/img/weight.svg');
+  -webkit-mask-image: url('../assets/img/weight.svg');
+}
+
+.details-img-height {
+  background-color: var(--text-attr);
+  mask-image: url('../assets/img/straighten.svg');
+  -webkit-mask-image: url('../assets/img/straighten.svg');
+}
