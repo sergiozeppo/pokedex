@@ -1,0 +1,13 @@
+.card-list {
+  display: flex;
+  padding: 24px;
+  max-width: 1440px;
+  height: 100%;
+  justify-content: center;
+  gap: 20px;
+  flex: 1;
+  flex-wrap: wrap;
+  border-radius: 8px;
+  background: var(--secondary-bg);
+  box-shadow: var(--box-shadow-inset);
+}

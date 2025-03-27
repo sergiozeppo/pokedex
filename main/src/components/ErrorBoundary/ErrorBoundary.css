@@ -1,0 +1,32 @@
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  text-align: center;
+  border-radius: 10px;
+  margin: 20px;
+  width: 90vw;
+  height: 90vh;
+  color: var(--text-light);
+}
+
+.reset-button {
+  padding: 10px 15px;
+  background-color: var(--error-btn);
+  border: none;
+  border-radius: 5px;
+  color: var(--text-light);
+  cursor: pointer;
+  margin-top: 10px;
+  width: 80px;
+  height: 40px;
+  flex: 0 0 0;
+}
+
+.reset-button:hover {
+  background-color: var(--error-btn-hover);
+}

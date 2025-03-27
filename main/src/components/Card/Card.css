@@ -1,0 +1,94 @@
+.card {
+  display: flex;
+  width: 250px;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--secondary-bg);
+  box-shadow: var(--box-shadow-card);
+}
+
+.card-number {
+  display: flex;
+  font-size: 18px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  color: var(--text);
+}
+
+.card-img {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.card-title {
+  display: flex;
+  height: 100px;
+  width: 250px;
+  padding: 24px 8px 10px 8px;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-direction: column;
+  border-radius: 10px;
+  background: var(--grayscale-bg);
+}
+
+h3 {
+  color: var(--text-dark);
+  text-transform: capitalize;
+  text-align: center;
+  flex: 1 0 0;
+  margin: 0;
+}
+p {
+  text-align: center;
+  margin: 0;
+}
+
+.checkbox-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: stretch;
+  padding: 10px 8px 0px 8px;
+}
+
+.red-checkbox {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.red-checkbox input {
+  display: none;
+}
+
+.red-checkbox span {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--text);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.red-checkbox input:checked + span::before {
+  content: '✔';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary-bg);
+  font-size: 20px;
+  font-weight: bold;
+}
