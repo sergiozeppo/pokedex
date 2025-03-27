@@ -1,0 +1,53 @@
+.modal-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 3;
+  border-radius: 8px;
+  background: #e4e1e2;
+  box-shadow: var(--box-shadow-inset);
+  padding: 0 16px 16px 16px;
+  min-width: 250px;
+}
+
+.modal-content p {
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+  gap: 8px;
+}
+
+.modal-button {
+  background: var(--primary-bg);
+  color: var(--text-light);
+  max-width: 120px;
+}
+
+.modal-img-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+}
+
+.modal-img-cont img {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+  object-position: bottom center;
+}
+
+.download-link-without-DOM {
+  display: none;
+}
