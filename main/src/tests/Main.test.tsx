@@ -4,7 +4,7 @@ import Main from '../views/Main/Main';
 import { Provider } from 'react-redux';
 import { setupStore, RootState } from '../store';
 
-vi.mock('next/router', () => ({
+vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: () => {},
   }),

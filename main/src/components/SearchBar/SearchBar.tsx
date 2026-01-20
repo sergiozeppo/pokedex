@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import Button from '../Button/Button';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
@@ -5,9 +7,11 @@ import { useDispatch } from 'react-redux';
 import { useSearchQuery } from '../../utils/useSearchQuery/useSearchQuery';
 import { setSearchQuery } from '../../store/reducers/searchQuerySlice';
 import styles from './SearchBar.module.css';
+import { useRouter } from 'next/navigation';
 
 function SearchBar() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [hasError, setHasError] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const { updateSearchQuery } = useSearchQuery();
@@ -19,12 +23,14 @@ function SearchBar() {
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       dispatch(setSearchQuery(inputValue.trim()));
+      router.replace(`/?q=${inputValue.trim()}`);
       updateSearchQuery(inputValue.trim());
     }
   };
 
   const handleSearchClick = () => {
     dispatch(setSearchQuery(inputValue.trim()));
+    router.replace(`/?q=${inputValue.trim()}`);
     updateSearchQuery(inputValue.trim());
   };
 

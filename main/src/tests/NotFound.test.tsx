@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import NotFound from '../../pages/404';
+import NotFound from '../../app/404/page';
 
 const mockedUseRouter = vi.fn();
-vi.mock('next/router', () => ({
+vi.mock('next/navigation', () => ({
   useRouter: () => mockedUseRouter(),
 }));
 

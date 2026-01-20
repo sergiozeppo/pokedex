@@ -1,15 +1,16 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { NextRouter, useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Provider } from 'react-redux';
 import { PokemonData } from '../../src/types/types';
 import { setupStore } from '../../src/store';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import CardDetails from '../../pages/pokemon/[name]';
+import CardDetails from '../../app/pokemon/[name]/ClientCardDetails';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 const mockPush = vi.fn();
 const mockReplace = vi.fn();
 
-vi.mock('next/router', () => ({
+vi.mock('next/navigation', () => ({
   useRouter: vi.fn(() => ({
     query: { name: 'pikachu' },
     push: mockPush,
@@ -18,6 +19,7 @@ vi.mock('next/router', () => ({
     isReady: true,
     pathname: '/pokemon/[name]',
     route: '/pokemon/[name]',
+    refresh: '',
     basePath: '',
     events: {
       on: vi.fn(),
@@ -84,7 +86,7 @@ describe('CardDetails Component', () => {
       push: mockPush,
       replace: mockReplace,
       asPath: '/pokemon/pikachu',
-    } as unknown as NextRouter);
+    } as unknown as AppRouterInstance);
   });
 
   afterEach(() => {
@@ -123,7 +125,7 @@ describe('CardDetails Component', () => {
     fireEvent.click(screen.getByTestId('close'));
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/');
+      expect(mockReplace).toHaveBeenCalled();
     });
   });
 

@@ -6,6 +6,7 @@ export interface PaginationControlsProps {
   totalPages: number;
   nextPage: () => void;
   prevPage: () => void;
+  onPageChange: (newPage: number) => void;
 }
 
 const PaginationControls = ({
